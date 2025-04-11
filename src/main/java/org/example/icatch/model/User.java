@@ -17,15 +17,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")  // schema.sql에 정의된 컬럼명과 일치시킴
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email")  // schema.sql의 컬럼명과 일치해야 함
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "user_nickname")
     private String nickname;
 
-    @Column(nullable = false)
+    @Column(name = "password")
     private String password;
 
     private boolean active = true;

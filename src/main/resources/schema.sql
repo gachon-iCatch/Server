@@ -8,10 +8,10 @@ DROP TABLE IF EXISTS camera;
 DROP TABLE IF EXISTS picture;
 DROP TABLE IF EXISTS setting;
 DROP TABLE IF EXISTS target;
-DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS users;
 
 -- 테이블 생성
-CREATE TABLE user (
+CREATE TABLE users (
                       user_id INTEGER NOT NULL,
                       user_nickname VARCHAR(255),
                       password VARCHAR(255),
@@ -24,7 +24,7 @@ CREATE TABLE target (
                         user_id INTEGER NOT NULL,
                         target_type VARCHAR(10) CHECK (target_type IN ('person', 'pet')),
                         PRIMARY KEY (target_id),
-                        FOREIGN KEY (user_id) REFERENCES user(user_id)
+                        FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE setting (
@@ -32,7 +32,7 @@ CREATE TABLE setting (
                          user_id INTEGER NOT NULL,
                          notification_enabled VARCHAR(10) CHECK (notification_enabled IN ('enabled', 'disabled')),
                          PRIMARY KEY (setting_id),
-                         FOREIGN KEY (user_id) REFERENCES user(user_id)
+                         FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE iot (
@@ -44,7 +44,7 @@ CREATE TABLE iot (
                      device_status VARCHAR(10) CHECK (device_status IN ('online', 'offline')),
                      version INTEGER,
                      PRIMARY KEY (device_id),
-                     FOREIGN KEY (user_id) REFERENCES user(user_id)
+                     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE active_log (
@@ -88,7 +88,7 @@ CREATE TABLE camera (
                         motion_detection_enabled BOOLEAN,
                         danger_zone VARCHAR(255),
                         PRIMARY KEY (camera_id),
-                        FOREIGN KEY (user_id) REFERENCES user(user_id),
+                        FOREIGN KEY (user_id) REFERENCES users(user_id),
                         FOREIGN KEY (device_id) REFERENCES iot(device_id),
                         FOREIGN KEY (target_id) REFERENCES target(target_id)
 );
@@ -101,7 +101,7 @@ CREATE TABLE notification (
                               title VARCHAR(255),
                               created_at VARCHAR(255),
                               PRIMARY KEY (notification_id),
-                              FOREIGN KEY (user_id) REFERENCES user(user_id),
+                              FOREIGN KEY (user_id) REFERENCES users(user_id),
                               FOREIGN KEY (log_id) REFERENCES active_log(log_id)
 );
 
@@ -116,7 +116,7 @@ CREATE TABLE gesture (
                          is_enabled VARCHAR(3) CHECK (is_enabled IN ('yes', 'no')),
                          action_id INTEGER NOT NULL,
                          PRIMARY KEY (gesture_id),
-                         FOREIGN KEY (user_id) REFERENCES user(user_id),
+                         FOREIGN KEY (user_id) REFERENCES users(user_id),
                          FOREIGN KEY (camera_id) REFERENCES camera(camera_id),
                          FOREIGN KEY (action_id) REFERENCES gesture_actions(action_id)
 );

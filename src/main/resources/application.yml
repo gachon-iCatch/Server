@@ -1,14 +1,29 @@
-spring.datasource.url=jdbc:h2:file:./data/testdb
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=password
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-  
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
-  
-spring.jpa.hibernate.ddl-auto=none
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-  
-spring.sql.init.mode=always
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  sql:
+    init:
+      mode: always
+
+security:
+  jwt:
+    token:
+      secret-key: a37sdl28ydh38gsl39syw72jsk10pq59abcdefghijklmnopqrstuvwxyz123456789
+      expire-length: 3600000
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.example.icatch: DEBUG  # 프로젝트 패키지명으로 변경하세요
