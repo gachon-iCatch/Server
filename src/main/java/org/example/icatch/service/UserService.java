@@ -28,14 +28,14 @@ public class UserService {
         }
 
         // 닉네임 중복 확인
-        if (userRepository.existsByNickname(signupRequest.getNickname())) {
+        if (userRepository.existsByNickname(signupRequest.getUserNickname())) {
             throw new IllegalArgumentException("이미 사용 중인 닉네임입니다");
         }
 
         // 사용자 생성
         User user = User.builder()
                 .email(signupRequest.getEmail())
-                .nickname(signupRequest.getNickname())
+                .nickname(signupRequest.getUserNickname())
                 .password(passwordEncoder.encode(signupRequest.getPassword()))
                 .active(true)
                 .build();
