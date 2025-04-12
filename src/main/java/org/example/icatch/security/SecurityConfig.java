@@ -45,12 +45,10 @@ public class SecurityConfig {
 
                 // 요청 URL 접근 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/h2-console/**", "/test").permitAll()
+                        // H2 콘솔 경로 제거하고 필요한 API 경로만 설정
+                        .requestMatchers("/api/auth/**", "/test").permitAll()
                         .anyRequest().authenticated()
                 )
-
-                // H2 콘솔 사용을 위한 설정
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
 
                 // JWT 필터 추가
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
