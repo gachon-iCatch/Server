@@ -45,8 +45,7 @@ public class SecurityConfig {
 
                 // 요청 URL 접근 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                        // H2 콘솔 경로 제거하고 필요한 API 경로만 설정
-                        .requestMatchers("/api/auth/**", "/test").permitAll()
+                        .requestMatchers("/api/auth/**", "/test", "/error", "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
 

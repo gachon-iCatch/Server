@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")  // schema.sql에 정의된 컬럼명과 일치시킴
+    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "email")  // schema.sql의 컬럼명과 일치해야 함

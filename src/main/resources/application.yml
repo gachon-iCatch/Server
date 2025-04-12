@@ -33,3 +33,6 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.example.icatch: DEBUG  # 프로젝트 패키지명으로 변경하세요
+
+server:
+  port: 8081  # 또는 다른 포트 번호
