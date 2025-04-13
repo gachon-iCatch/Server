@@ -1,3 +1,38 @@
 spring:
   datasource:
-    url: jdbc:h
+    url: jdbc:mysql://localhost:3306/iCatch?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: azdfy74711
+
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update  # 개발 환경에서는 update, 운영 환경에서는 validate 권장
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        connection:
+          characterEncoding: utf8
+          charSet: utf8
+          useUnicode: true
+  sql:
+    init:
+      mode: always
+
+security:
+  jwt:
+    token:
+      secret-key: a37sdl28ydh38gsl39syw72jsk10pq59abcdefghijklmnopqrstuvwxyz123456789
+      expire-length: 3600000
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.example.icatch: DEBUG  # 프로젝트 패키지명으로 변경하세요
+
+server:
+  port: 8081  # 또는 다른 포트 번호
