@@ -28,7 +28,7 @@ public class UserService {
         }
 
         // 닉네임 중복 확인
-        if (userRepository.existsByNickname(signupRequest.getUserNickname())) {
+        if (userRepository.existsByUserNickname(signupRequest.getUserNickname())) {
             throw new IllegalArgumentException("이미 사용 중인 닉네임입니다");
         }
 

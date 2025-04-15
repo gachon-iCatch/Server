@@ -27,7 +27,8 @@ spring:
 security:
   jwt:
     token:
-      secret-key: a37sdl28ydh38gsl39syw72jsk10pq59abcdefghijklmnopqrstuvwxyz123456789
+      secret: a37sdl28ydh38gsl39syw72jsk10pq59asd48fg123hj89klw4ert41yu1io123456789
+      secret-key: a37sdl28ydh38gsl39syw72jsk10pq59asd48fg123hj89klw4ert41yu1io123456789
       expire-length: 3600000
 
 logging:
@@ -36,4 +37,4 @@ logging:
     org.example.icatch: DEBUG  # 프로젝트 패키지명으로 변경하세요
 
 server:
-  port: 8081
+  port: 8080

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityService {
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    @Value("${security.jwt.token.secret}")
+    private String secretKey;
 
 
     public Integer getUserIdFromToken(String token) {
@@ -19,7 +19,7 @@ public class SecurityService {
         }
 
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -32,7 +32,7 @@ public class SecurityService {
                 token = token.substring(7);
             }
 
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;

@@ -23,8 +23,8 @@ public class Device {
     private Long device_id;
 
     @ManyToOne
-    @JoinColumn(name = "users", nullable = false)
-    private User user;
+    @JoinColumn(name = "user", nullable = false)
+    private User user_id;
 
     @Column(nullable = false, unique = true)
     private String device_ip;

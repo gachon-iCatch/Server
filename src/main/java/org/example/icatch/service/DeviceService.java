@@ -23,7 +23,7 @@ public class DeviceService {
 
         Device device = Device.builder()
                 .device_ip(deviceAuthRequest.getDeviceIp())
-                .user(user)
+                .user_id(user)
                 .build();
         return deviceRepository.save(device);
     }
