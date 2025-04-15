@@ -25,7 +25,7 @@ public class User {
     private Integer userId;
 
     @Column(name = "user_nickname")
-    private String userNickname; // 또는 nickname
+    private String userNickname;
 
     @Column(name = "password")
     private String password;

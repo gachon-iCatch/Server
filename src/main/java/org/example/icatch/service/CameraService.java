@@ -21,10 +21,10 @@ public class CameraService {
     }
 
     /**
-     * 위험 구역 설정
+     * 위험 구역 설정 (한 개만 선택 가능)
      * @param cameraId 카메라 ID
      * @param userId 사용자 ID
-     * @param zoneNumbers 선택된 구역 번호 리스트 (1-9)
+     * @param zoneNumbers 선택된 구역 번호 리스트
      */
     @Transactional
     public Camera setDangerZone(Integer cameraId, Integer userId, List<Integer> zoneNumbers) {
@@ -41,13 +41,19 @@ public class CameraService {
             throw new RuntimeException("해당 카메라에 대한 접근 권한이 없습니다");
         }
 
+        // 위험 구역 개수 제한 (1개만 허용)
+        if (zoneNumbers.size() > 1) {
+            throw new IllegalArgumentException("위험 구역은 하나만 선택할 수 있습니다");
+        }
+
         // 구역 번호 유효성 검사
         validateZoneNumbers(zoneNumbers);
 
-        // 선택된 구역 번호를 쉼표로 구분된 문자열로 변환 (예: "1,3,5,7")
-        String dangerZoneStr = zoneNumbers.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
+        // 선택된 구역 번호를 문자열로 변환
+        String dangerZoneStr = "";
+        if (!zoneNumbers.isEmpty()) {
+            dangerZoneStr = String.valueOf(zoneNumbers.get(0));
+        }
 
         // 위험 구역 설정
         camera.setDangerZone(dangerZoneStr);
@@ -103,4 +109,5 @@ public class CameraService {
             }
         }
     }
+
 }
