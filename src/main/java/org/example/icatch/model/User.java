@@ -1,11 +1,16 @@
 package org.example.icatch.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+
 
 @Entity
 @Table(name = "user")
@@ -16,32 +21,48 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
-
-    @Column(name = "email")  // schema.sql의 컬럼명과 일치해야 함
-    private String email;
+    private Integer userId;
 
     @Column(name = "user_nickname")
-    private String nickname;
+    private String userNickname; // 또는 nickname
 
     @Column(name = "password")
     private String password;
 
-    private boolean active = true;
+    @Column(name = "email")
+    private String email;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
+    // Getters and setters
+    public Integer getUserId() {
+        return userId;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserNickname() {
+        return userNickname;
+    }
+
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

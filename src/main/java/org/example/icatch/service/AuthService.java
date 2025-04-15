@@ -49,7 +49,7 @@ public class AuthService {
         return AuthResponse.builder()
                 .token(token)
                 .email(user.getEmail())
-                . userNickname(user.getNickname())
+                . userNickname(user.getUserNickname())
                 .build();
     }
 }

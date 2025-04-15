@@ -33,13 +33,10 @@ public class UserService {
         }
 
         // 사용자 생성
-        User user = User.builder()
-                .email(signupRequest.getEmail())
-                .nickname(signupRequest.getUserNickname())
-                .password(passwordEncoder.encode(signupRequest.getPassword()))
-                .active(true)
-                .build();
-
+        User user = new User();
+        user.setEmail(signupRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        user.setUserNickname(signupRequest.getUserNickname());
         return userRepository.save(user);
     }
 

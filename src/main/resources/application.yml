@@ -3,14 +3,15 @@ spring:
     url: jdbc:mysql://localhost:3306/iCatch?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: azdfy74711
+    password: root
 
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    show-sql: true
     hibernate:
       ddl-auto: update  # 개발 환경에서는 update, 운영 환경에서는 validate 권장
-    show-sql: true
     properties:
       hibernate:
         format_sql: true
@@ -35,4 +36,4 @@ logging:
     org.example.icatch: DEBUG  # 프로젝트 패키지명으로 변경하세요
 
 server:
-  port: 8081  # 또는 다른 포트 번호
+  port: 8081
