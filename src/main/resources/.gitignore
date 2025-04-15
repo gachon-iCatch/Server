@@ -21,6 +21,7 @@ logs/
 ### 환경 설정 파일 ###
 .env
 application-dev.yml
+application.yml
 application-prod.yml
 
 ### 기타 ###
