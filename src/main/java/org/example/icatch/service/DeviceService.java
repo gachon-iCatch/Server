@@ -2,7 +2,6 @@ package org.example.icatch.service;
 
 import org.example.icatch.dto.DeviceAuthRequest;
 import org.example.icatch.dto.DeviceAuthResponse;
-import org.example.icatch.model.Camera;
 import org.example.icatch.model.Device;
 import org.example.icatch.model.User;
 import org.example.icatch.repository.CameraRepository;
