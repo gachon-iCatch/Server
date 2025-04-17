@@ -19,7 +19,7 @@ public class Camera{
     @Column(name = "target_id")
     private Integer targetId;
 
-    @Column(name = "camera__name") // 컬럼명에 밑줄 두 개 있음에 주의
+    @Column(name = "camera_name")
     private String cameraName;
 
     @Column(name = "is_enabled")

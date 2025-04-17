@@ -29,7 +29,7 @@ public class QRCodeController {
                     wifiCredentials.getWifiId(),
                     wifiCredentials.getWifiPassword());
 
-            // QR 코드 생성 (크기: 250x250 픽셀)
+            // QR 코드 생성 (크기: 250x250 픽셀)?
             String qrCodeImage = qrCodeService.generateQRCodeImage(wifiJson, 250, 250);
 
             Map<String, Object> response = new HashMap<>();

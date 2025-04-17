@@ -41,7 +41,7 @@ public class CameraService {
             throw new RuntimeException("해당 카메라에 대한 접근 권한이 없습니다");
         }
 
-        // 위험 구역 개수 제한 (1개만 허용)
+        // 위험 구역 선탹 개수 제한 (1개만)
         if (zoneNumbers.size() > 1) {
             throw new IllegalArgumentException("위험 구역은 하나만 선택할 수 있습니다");
         }
@@ -105,7 +105,7 @@ public class CameraService {
 
         for (Integer zoneNumber : zoneNumbers) {
             if (zoneNumber < 1 || zoneNumber > 9) {
-                throw new IllegalArgumentException("유효하지 않은 구역 번호입니다. 구역 번호는 1부터 9까지만 가능합니다.");
+                throw new IllegalArgumentException("유효하지 않은 구역 번호입니다.");
             }
         }
     }

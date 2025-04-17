@@ -35,17 +35,13 @@ public class AuthService {
                 )
         );
 
-        // 인증 정보 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // JWT 토큰 생성
         String token = jwtTokenProvider.createToken(loginRequest.getEmail());
 
-        // 사용자 정보 조회
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
 
-        // 응답 생성
         return AuthResponse.builder()
                 .token(token)
                 .email(user.getEmail())
