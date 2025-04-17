@@ -21,7 +21,7 @@ public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "device_id")
-    private Long deviceId;
+    private Integer deviceId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
