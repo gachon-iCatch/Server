@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.icatch.enums.AiStatus;
+import org.example.icatch.enums.CameraStatus;
 import org.example.icatch.enums.DeviceStatus;
 
 import java.time.LocalDateTime;
@@ -44,5 +45,17 @@ public class Device {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
 }

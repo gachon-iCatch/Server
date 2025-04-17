@@ -32,24 +32,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF 비활성화 (RESTful API를 위해)
-                .csrf(csrf -> csrf.disable())
-
-                // CORS 설정
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-                // 세션 관리 (JWT를 사용하므로 STATELESS로 설정)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
-                // 요청 URL 접근 권한 설정
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/test", "/error", "/api/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/test", "/error", "/api/**", "/swagger-ui/**",  "/swagger-ui.html",       // Swagger UI HTML 페이지 접근
+                                "/v3/api-docs/**", "/webjars/**"  ).permitAll()
                         .anyRequest().authenticated()
                 )
-
-                // JWT 필터 추가
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
