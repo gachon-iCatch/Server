@@ -20,29 +20,36 @@ import java.time.LocalDateTime;
 public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long device_id;
+    @Column(name = "device_id")
+    private Long deviceId;
 
     @ManyToOne
-    @JoinColumn(name = "user", nullable = false)
-    private User user_id;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(nullable = false, unique = true)
-    private String device_ip;
-
-    @Enumerated(EnumType.STRING)
-    private AiStatus ai_Status;
+    @Column(name = "device_ip", nullable = false, unique = true)
+    private String deviceIp;
 
     @Enumerated(EnumType.STRING)
-    private DeviceStatus device_status;
+    @Column(name = "ai_status")
+    private AiStatus aiStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "device_status")
+    private DeviceStatus deviceStatus;
+
+    @Column(name = "temperature")
     private Double temperature;
 
+    @Column(name = "humidity")
     private Double humidity;
 
+    @Column(name = "version")
     private Double version;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
 }
