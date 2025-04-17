@@ -27,13 +27,10 @@ public class MonitoringController {
     @PostMapping("/targets/create")
     public ResponseEntity<ApiResponse> createTarget(@RequestBody TargetCreateRequest request) {
         try {
-            // 1. 타겟 객체 생성
             Integer targetId = targetService.createTarget(request);
 
-            // 2. 생성된 타겟 ID와 함께 카메라 이름 설정
             cameraService.setupCamera(request.getUser_Id(), request.getDevice_Id(), targetId, request.getCamera_name());
 
-            // 기존 ApiResponse 클래스의 static 메소드 사용
             return ResponseEntity.ok(ApiResponse.success("Target and camera created successfully", targetId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(e.getMessage()));
