@@ -1,20 +1,32 @@
 package org.example.icatch.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
 
 @Entity
 @Table(name = "camera")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Camera{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "camera_id")
     private Integer cameraId;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(name = "device_id")
-    private Integer deviceId;
+    @ManyToOne
+    @JoinColumn(name = "device", nullable = false)
+    private Device device;
 
     @Column(name = "target_id")
     private Integer targetId;
@@ -39,20 +51,17 @@ public class Camera{
         this.cameraId = cameraId;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public Integer getDeviceId() {
-        return deviceId;
+        return device != null ? device.getDeviceId() : null;
     }
 
     public void setDeviceId(Integer deviceId) {
-        this.deviceId = deviceId;
+        if (this.device == null) {
+            this.device = new Device(); // 기본 생성자 있어야 함
+        }
+        this.device.setDeviceId(deviceId);
     }
 
     public Integer getTargetId() {
@@ -87,6 +96,16 @@ public class Camera{
         this.motionDetectionEnabled = motionDetectionEnabled;
     }
 
+    public Integer getUserId() {
+        return user != null ? user.getUserId() : null;
+    }
+
+    public void setUserId(Integer userId) {
+        if (this.user == null) {
+            this.user = new User();
+        }
+        this.user.setUserId(userId);
+    }
     public String getDangerZone() {
         return dangerZone;
     }
