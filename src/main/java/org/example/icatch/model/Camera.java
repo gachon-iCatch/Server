@@ -31,7 +31,6 @@ public class Camera{
     @Column(name = "danger_zone")
     private String dangerZone;
 
-    // Getter/Setter
     public Integer getCameraId() {
         return cameraId;
     }
