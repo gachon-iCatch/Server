@@ -2,6 +2,7 @@ package org.example.icatch.service;
 
 import org.example.icatch.dto.DeviceAuthRequest;
 import org.example.icatch.dto.DeviceAuthResponse;
+import org.example.icatch.model.Camera;
 import org.example.icatch.model.Device;
 import org.example.icatch.model.User;
 import org.example.icatch.repository.CameraRepository;
@@ -27,8 +28,8 @@ public class DeviceService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Device device = Device.builder()
-                .device_ip(deviceAuthRequest.getDeviceIp())
-                .user_id(user)
+                .deviceIp(deviceAuthRequest.getDeviceIp())
+                .user(user)
                 .build();
 
         Camera camera = Camera.builder()
@@ -40,9 +41,9 @@ public class DeviceService {
         cameraRepository.save(camera);
 
         return DeviceAuthResponse.builder()
-                .deviceId(device.getDevice_id())
-                .cameraId(camera.getCamera_id())
-                .userId(user.getId())
+                .deviceId(device.getDeviceId())
+                .cameraId(camera.getCameraId())
+                .userId(user.getUserId())
                 .build();
     }
 }
