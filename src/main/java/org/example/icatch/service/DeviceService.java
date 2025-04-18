@@ -22,8 +22,8 @@ public class DeviceService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Device device = Device.builder()
-                .device_ip(deviceAuthRequest.getDeviceIp())
-                .user_id(user)
+                .deviceIp(deviceAuthRequest.getDeviceIp())
+                .user(user)
                 .build();
         return deviceRepository.save(device);
     }
