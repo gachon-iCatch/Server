@@ -4,16 +4,11 @@ package org.example.icatch.controller;
 import org.example.icatch.dto.ApiResponse;
 import org.example.icatch.dto.DeviceAuthRequest;
 import org.example.icatch.dto.DeviceAuthResponse;
-import org.example.icatch.model.Device;
 import org.example.icatch.service.DeviceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/device")

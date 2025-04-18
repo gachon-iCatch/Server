@@ -27,23 +27,19 @@ public class DeviceService {
         User user = userRepository.findById(deviceAuthRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Device device = Device.builder()
-                .deviceIp(deviceAuthRequest.getDeviceIp())
-                .user(user)
-                .build();
+        Device device = new Device();
+        device.setDeviceIp(deviceAuthRequest.getDeviceIp());
+        device.setUser(user);
 
-        Camera camera = Camera.builder()
-                .user(user)
-                .device(device)
-                .build();
+        Camera camera = new Camera();
+        camera.setUser(user);
+        camera.setDevice(device);
 
         deviceRepository.save(device);
         cameraRepository.save(camera);
 
-        return DeviceAuthResponse.builder()
-                .deviceId(device.getDeviceId())
-                .cameraId(camera.getCameraId())
-                .userId(user.getUserId())
-                .build();
+        return new DeviceAuthResponse(device.getDeviceId(), camera.getCameraId(), user.getUserId());
     }
+
+
 }
