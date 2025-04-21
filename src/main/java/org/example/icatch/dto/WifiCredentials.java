@@ -4,7 +4,6 @@ public class WifiCredentials {
     private String wifiId;
     private String wifiPassword;
 
-    // Getters and setters
     public String getWifiId() {
         return wifiId;
     }

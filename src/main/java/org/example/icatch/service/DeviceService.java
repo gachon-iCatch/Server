@@ -1,6 +1,7 @@
 package org.example.icatch.service;
 
 import org.example.icatch.dto.DeviceAuthRequest;
+import org.example.icatch.dto.DeviceAuthResponse;
 import org.example.icatch.model.Device;
 import org.example.icatch.model.User;
 import org.example.icatch.repository.DeviceRepository;
@@ -17,14 +18,20 @@ public class DeviceService {
         this.userRepository = userRepository;
     }
 
-    public Device registerDevice(DeviceAuthRequest deviceAuthRequest) {
-        User user = userRepository.findById(deviceAuthRequest.getUserId())
+    public DeviceAuthResponse registerDevice(DeviceAuthRequest deviceAuthRequest) {
+        User user = userRepository.findById(deviceAuthRequest.getUserId().intValue())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Device device = Device.builder()
                 .deviceIp(deviceAuthRequest.getDeviceIp())
-                .user(user)
+                .userId(user)
                 .build();
-        return deviceRepository.save(device);
+
+        Device savedDevice = deviceRepository.save(device);
+
+        return DeviceAuthResponse.builder()
+                .deviceId(savedDevice.getDeviceId())
+                .deviceIP(savedDevice.getDeviceIp())
+                .build();
     }
 }
