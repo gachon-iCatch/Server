@@ -18,14 +18,14 @@ public class Camera{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "camera_id")
-    private Integer cameraId;
+    private Integer camera_id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "user_id")
+    private User userId;
 
     @ManyToOne
-    @JoinColumn(name = "device", nullable = false)
+    @JoinColumn(name = "device_id", referencedColumnName = "device_id")
     private Device device;
 
     @Column(name = "target_id")
@@ -44,13 +44,12 @@ public class Camera{
     private String dangerZone;
 
     public Integer getCameraId() {
-        return cameraId;
+        return camera_id;
     }
 
     public void setCameraId(Integer cameraId) {
-        this.cameraId = cameraId;
+        this.camera_id = cameraId;
     }
-
 
 
     public Integer getDeviceId() {
@@ -97,14 +96,14 @@ public class Camera{
     }
 
     public Integer getUserId() {
-        return user != null ? user.getUserId() : null;
+        return userId != null ? userId.getUserId() : null;
     }
 
     public void setUserId(Integer userId) {
-        if (this.user == null) {
-            this.user = new User();
+        if (this.userId == null) {
+            this.userId = new User();
         }
-        this.user.setUserId(userId);
+        this.userId.setUserId(userId);
     }
     public String getDangerZone() {
         return dangerZone;

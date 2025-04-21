@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class DeviceDto {
+public class DeviceDto {
     private Integer deviceId;
+    private String deviceIp;
     private String aiStatus;
     private String deviceStatus;
     private Double temperature;
     private Double humidity;
-    private Integer version;
+    private Double version;
 }

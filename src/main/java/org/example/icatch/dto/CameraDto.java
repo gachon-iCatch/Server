@@ -1,6 +1,5 @@
 package org.example.icatch.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class CameraDto {
+public class CameraDto {
     private Integer cameraId;
     private String cameraName;
     private String isEnabled;

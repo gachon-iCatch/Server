@@ -29,4 +29,9 @@ public class Target {
     public enum TargetType {
         person, pet
     }
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
 }

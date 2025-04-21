@@ -27,7 +27,6 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest loginRequest) {
-        // 인증 시도
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -45,7 +44,8 @@ public class AuthService {
         return AuthResponse.builder()
                 .token(token)
                 .email(user.getEmail())
-                . userNickname(user.getUserNickname())
+                .userNickname(user.getUserNickname())
+                .userId(user.getUserId())
                 .build();
     }
 }

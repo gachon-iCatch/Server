@@ -1,24 +1,39 @@
 package org.example.icatch.service;
 
-import org.example.icatch.dto.PasswordChangeRequest;
-import org.example.icatch.dto.SignupRequest;
-import org.example.icatch.model.User;
-import org.example.icatch.repository.UserRepository;
+import org.example.icatch.dto.*;
+import org.example.icatch.model.*;
+import org.example.icatch.repository.*;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CameraRepository cameraRepository;
+    private final TargetRepository targetRepository;
+    private final GestureRepository gestureRepository;
+    private final ActiveLogRepository activeLogRepository; // 추가
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       CameraRepository cameraRepository, TargetRepository targetRepository,
+                       GestureRepository gestureRepository, ActiveLogRepository activeLogRepository) { // 생성자 파라미터 추가
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cameraRepository = cameraRepository;
+        this.targetRepository = targetRepository;
+        this.gestureRepository = gestureRepository;
+        this.activeLogRepository = activeLogRepository;
     }
+
+
 
     @Transactional
     public User registerUser(SignupRequest signupRequest) {
