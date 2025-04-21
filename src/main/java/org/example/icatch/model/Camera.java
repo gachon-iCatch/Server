@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -43,6 +44,10 @@ public class Camera{
     @Column(name = "danger_zone")
     private String dangerZone;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // Getter/Setter
     public Integer getCameraId() {
         return camera_id;
     }

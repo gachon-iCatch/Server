@@ -18,12 +18,12 @@ public class DeviceService {
     }
 
     public Device registerDevice(DeviceAuthRequest deviceAuthRequest) {
-        User user = userRepository.findById(Math.toIntExact(deviceAuthRequest.getUserId()))
+        User user = userRepository.findById(deviceAuthRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Device device = Device.builder()
                 .deviceIp(deviceAuthRequest.getDeviceIp())
-                .userId(user)
+                .user(user)
                 .build();
         return deviceRepository.save(device);
     }
