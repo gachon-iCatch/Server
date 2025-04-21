@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeviceAuthResponse {
+    // 수정
     long deviceId;
-    long userId;
+    String deviceIP;
     long cameraId;
 }
