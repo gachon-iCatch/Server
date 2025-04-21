@@ -27,4 +27,18 @@ public class DeviceController {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
+
+    @GetMapping("/auth/authenticate")
+    public ResponseEntity<ApiResponse> getAuthenticate(@RequestParam Integer userId) {
+        try{
+
+            DeviceAuthResponse data = deviceService.findDevice(userId);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(ApiResponse.success("데이터 전송에 성공하였습니다", data));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
 }

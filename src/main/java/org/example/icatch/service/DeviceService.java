@@ -10,6 +10,9 @@ import org.example.icatch.repository.DeviceRepository;
 import org.example.icatch.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class DeviceService {
     private final DeviceRepository deviceRepository;
@@ -38,8 +41,14 @@ public class DeviceService {
         deviceRepository.save(device);
         cameraRepository.save(camera);
 
-        return new DeviceAuthResponse(device.getDeviceId(), camera.getCameraId(), user.getUserId());
+        return new DeviceAuthResponse(device.getDeviceId(),device.getDeviceIp(), camera.getCameraId());
     }
 
-
+    public DeviceAuthResponse findDevice(Integer userId) {
+        Optional<Device> OptionalDevice = deviceRepository.findFirstByUser_UserIdOrderByCreatedAtDesc(userId);
+        Device device = OptionalDevice.get();
+        Optional<Camera> OptionalCamera = cameraRepository.findFirstByUser_UserIdOrderByCreatedAtDesc(userId);
+        Camera camera = OptionalCamera.get();
+        return new DeviceAuthResponse(device.getDeviceId(),device.getDeviceIp(),camera.getCameraId());
+    }
 }
