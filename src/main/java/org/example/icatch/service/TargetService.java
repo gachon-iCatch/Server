@@ -19,10 +19,10 @@ public class TargetService {
 
     @Transactional
     public Integer createTarget(TargetCreateRequest request) {
-
         Target target = Target.builder()
-                .userId(request.getUser_Id())
-                .targetType(Target.TargetType.valueOf(request.getTarget_Type().toLowerCase()))
+                .userId(request.getUserId())
+                .cameraName(request.getCameraName()) 
+                .targetType(Target.TargetType.valueOf(request.getTargetType().toLowerCase()))
                 .build();
 
         Target savedTarget = targetRepository.save(target);
