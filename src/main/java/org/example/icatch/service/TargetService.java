@@ -19,9 +19,9 @@ public class TargetService {
 
     @Transactional
     public Integer createTarget(TargetCreateRequest request) {
-
         Target target = Target.builder()
                 .userId(request.getUser_Id())
+                .cameraName(request.getCamera_name()) // 카메라 이름만 설정
                 .targetType(Target.TargetType.valueOf(request.getTarget_Type().toLowerCase()))
                 .build();
 
