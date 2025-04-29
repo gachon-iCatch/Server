@@ -1,6 +1,7 @@
 package org.example.icatch.controller;
 
 import org.example.icatch.dto.TargetCreateRequest;
+import org.example.icatch.model.Target;
 import org.example.icatch.service.TargetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +26,20 @@ public class TargetController {
         Map<String, Object> response = new HashMap<>();
 
         try {
+            if (request.getUserId() == null) {
                 response.put("success", false);
                 response.put("message", "User ID is required");
                 return ResponseEntity.badRequest().body(response);
             }
 
+            if (request.getTargetType() == null || request.getTargetType().isEmpty()) {
                 response.put("success", false);
                 response.put("message", "Target type is required");
                 return ResponseEntity.badRequest().body(response);
             }
 
             try {
+                Target.TargetType.valueOf(request.getTargetType().toLowerCase());
             } catch (IllegalArgumentException e) {
                 response.put("success", false);
                 response.put("message", "Invalid target type. Available types: person, pet");

@@ -8,9 +8,7 @@ import java.util.List;
 
 @Repository
 public interface CameraRepository extends JpaRepository<Camera, Integer> {
+    List<Camera> findByUserId_UserId(Integer userId);
 
-    List<Camera> findByUserId(Integer userId);
-
-
-    List<Camera> findByTargetId(Integer targetId);
+    Integer countByUserId_UserId(Integer userId);
 }
