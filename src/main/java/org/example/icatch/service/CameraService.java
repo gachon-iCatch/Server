@@ -38,7 +38,7 @@ public class CameraService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
 
-        List<Camera> cameras = cameraRepository.findByUserId_UserId(user.getUserId());
+        List<Camera> cameras = cameraRepository.findByUser_UserId(user.getUserId());
         return cameras.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -238,7 +238,7 @@ public class CameraService {
     }
 
     public int countByUserId(Integer userId) {
-        return cameraRepository.countByUserId_UserId(userId);
+        return cameraRepository.countByUser_UserId(userId);
     }
 
 }

@@ -130,7 +130,7 @@ public class UserService {
         profileDto.setEmail(user.getEmail());
 
         // 카메라, 반려동물, 제스처의 개수 조회
-        int cameraCount = cameraRepository.countByUserId_UserId(userId);
+        int cameraCount = cameraRepository.countByUser_UserId(userId);
         int targetCount = targetRepository.countByUserId(userId);
         int gestureCount = gestureRepository.countByUserId(userId);
 
