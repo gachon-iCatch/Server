@@ -35,12 +35,17 @@ public class Gesture {
     @Column(name = "gesture_description", columnDefinition = "text")
     private String gestureDescription;
 
-    @Column(name = "geture_image_path")
+    @Column(name = "gesture_image_path")
     private String gestureImagePath;
 
     @Column(name = "is_enabled")
-    private String isEnabled;
+    @Enumerated(EnumType.STRING)
+    private IsEnabled isEnabled;
 
     @Column(name = "action_id", nullable = false)
     private Integer actionId;
+
+    public enum IsEnabled {
+        yes, no
+    }
 }

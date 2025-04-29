@@ -29,4 +29,8 @@ public class TargetService {
 
         return savedTarget.getTargetId();
     }
+    public int countByUserId(Integer userId) {
+        return targetRepository.countByUserId(userId);
+    }
+
 }

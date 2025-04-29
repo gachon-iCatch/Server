@@ -82,13 +82,9 @@ public class GestureService {
     }
 
     @Transactional
-    public Gesture setGestureEnabled(Integer gestureId, String isEnabled) {
+    public Gesture setGestureEnabled(Integer gestureId, Gesture.IsEnabled isEnabled) {
         Gesture gesture = gestureRepository.findById(gestureId)
                 .orElseThrow(() -> new NoSuchElementException("제스처를 찾을 수 없습니다"));
-
-        if (!isEnabled.equals("yes") && !isEnabled.equals("no")) {
-            throw new IllegalArgumentException("isEnabled 값이 잘못되었습니다. 'yes' 또는 'no'여야 합니다.");
-        }
 
         gesture.setIsEnabled(isEnabled);
         return gestureRepository.save(gesture);
@@ -149,7 +145,17 @@ public class GestureService {
         gesture.setGestureType(dto.getGestureType());
         gesture.setGestureDescription(dto.getGestureDescription());
         gesture.setGestureImagePath(dto.getGestureImagePath());
-        gesture.setIsEnabled(dto.getIsEnabled() != null ? dto.getIsEnabled() : "yes");
+
+        if (dto.getIsEnabled() != null) {
+            try {
+                gesture.setIsEnabled(Gesture.IsEnabled.valueOf(dto.getIsEnabled()));
+            } catch (IllegalArgumentException e) {
+                gesture.setIsEnabled(Gesture.IsEnabled.yes);
+            }
+        } else {
+            gesture.setIsEnabled(Gesture.IsEnabled.yes);
+        }
+
         gesture.setActionId(action.getActionId());
 
         return gestureRepository.save(gesture);
@@ -173,14 +179,19 @@ public class GestureService {
         if (dto.getMessage() != null) action.setMessage(dto.getMessage());
         gestureActionRepository.save(action);
 
-        // 제스처 업데이트
         if (dto.getUserId() != null) existingGesture.setUserId(dto.getUserId());
         if (dto.getCameraId() != null) existingGesture.setCameraId(dto.getCameraId());
         if (dto.getGestureName() != null) existingGesture.setGestureName(dto.getGestureName());
         if (dto.getGestureType() != null) existingGesture.setGestureType(dto.getGestureType());
         if (dto.getGestureDescription() != null) existingGesture.setGestureDescription(dto.getGestureDescription());
         if (dto.getGestureImagePath() != null) existingGesture.setGestureImagePath(dto.getGestureImagePath());
-        if (dto.getIsEnabled() != null) existingGesture.setIsEnabled(dto.getIsEnabled());
+        if (dto.getIsEnabled() != null) {
+            try {
+                existingGesture.setIsEnabled(Gesture.IsEnabled.valueOf(dto.getIsEnabled()));
+            } catch (IllegalArgumentException e) {
+                // 유효하지 않은 값은 무시
+            }
+        }
 
         return gestureRepository.save(existingGesture);
     }
@@ -222,9 +233,12 @@ public class GestureService {
         dto.setGestureType(gesture.getGestureType());
         dto.setGestureDescription(gesture.getGestureDescription());
         dto.setGestureImagePath(gesture.getGestureImagePath());
-        dto.setIsEnabled(gesture.getIsEnabled());
+        dto.setIsEnabled(gesture.getIsEnabled().toString());
         dto.setSelectedFunction(action.getSelectedFunction());
         dto.setMessage(action.getMessage());
         return dto;
+    }
+    public int countByUserId(Integer userId) {
+        return gestureRepository.countByUserId(userId);
     }
 }
