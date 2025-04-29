@@ -24,12 +24,12 @@ public class QRCodeController {
     @PostMapping("/generate")
     public ResponseEntity<?> generateQRCode(@RequestBody WifiCredentials wifiCredentials) {
         try {
-            // Wi-Fi 정보를 JSON 형태로 변환
+            // Wi-Fi 정보 JSON 형태로 변환
             String wifiJson = String.format("{\"wifiId\":\"%s\",\"wifiPassword\":\"%s\"}",
                     wifiCredentials.getWifiId(),
                     wifiCredentials.getWifiPassword());
 
-            // QR 코드 생성 (크기: 250x250 픽셀)?
+            // QR 코드 생성
             String qrCodeImage = qrCodeService.generateQRCodeImage(wifiJson, 250, 250);
 
             Map<String, Object> response = new HashMap<>();

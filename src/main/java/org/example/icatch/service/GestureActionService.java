@@ -1,16 +1,16 @@
 package org.example.icatch.service;
 
-import jakarta.transaction.Transactional;
 import org.example.icatch.model.GestureAction;
 import org.example.icatch.repository.GestureActionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class GestureActionService{
+public class GestureActionService {
 
     private final GestureActionRepository gestureActionRepository;
 

@@ -34,7 +34,6 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    // Getters and setters
     public Integer getUserId() {
         return userId;
     }

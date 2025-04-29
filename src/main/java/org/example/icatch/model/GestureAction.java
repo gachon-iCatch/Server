@@ -21,12 +21,11 @@ public class GestureAction {
 
     @Column(name = "selected_function")
     @Enumerated(EnumType.STRING)
-    private SelectedFunction selectedFunction;
+    private org.example.icatch.model.GestureAction.SelectedFunction selectedFunction;
 
     @Column(name = "message")
     private String message;
 
-    // 선택 가능한 기능들을 정의한 열거형
     public enum SelectedFunction {
         BLACK_SCREEN("블랙 스크린 ON/OFF"),
         SIGNAL("신고 기능"),

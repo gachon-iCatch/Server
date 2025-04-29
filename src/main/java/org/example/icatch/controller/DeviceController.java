@@ -19,10 +19,7 @@ import java.util.HashMap;
 @RequestMapping("/api/device")
 public class DeviceController {
     private final DeviceService deviceService;
-
-    public DeviceController(DeviceService deviceService) {
-        this.deviceService = deviceService;
-    }
+    public DeviceController(DeviceService deviceService) {this.deviceService = deviceService;}
 
     @PostMapping("/auth/authenticate")
     public ResponseEntity<ApiResponse> authenticate(@RequestBody DeviceAuthRequest deviceAuthRequest) {
@@ -36,4 +33,3 @@ public class DeviceController {
         }
     }
 }
-

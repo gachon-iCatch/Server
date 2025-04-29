@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GestureActionRepository extends JpaRepository<GestureAction, Integer> {
-
     List<GestureAction> findBySelectedFunction(GestureAction.SelectedFunction selectedFunction);
 }

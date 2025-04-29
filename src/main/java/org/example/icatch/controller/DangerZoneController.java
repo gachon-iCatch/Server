@@ -88,7 +88,7 @@ public class DangerZoneController {
         }
     }
 
-    //카메라 그리드 정보 제공 API (9개 구역에 대한 정보)
+    //카메라 그리드 정보 제공 API (9개 구역)
     @GetMapping("/{cameraId}/grid")
     public ResponseEntity<ApiResponse> getCameraGrid(
             @PathVariable Integer cameraId,
@@ -112,7 +112,7 @@ public class DangerZoneController {
                         .collect(Collectors.toList());
             }
 
-            // 9개 구역 정보
+            // 9개 구역
             List<GridZone> gridZones = new ArrayList<>();
             for (int i = 1; i <= 9; i++) {
                 GridZone zone = new GridZone();
@@ -126,8 +126,6 @@ public class DangerZoneController {
             return ResponseEntity.badRequest().body(ApiResponse.error("카메라 그리드 정보를 가져오는데 실패했습니다: " + e.getMessage()));
         }
     }
-
-    //그리드 구역 정보를 위한 내부 클래스
 
     private static class GridZone {
         private int zoneId;      // 구역 ID (1-9)

@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 
 
 @Entity
@@ -19,14 +18,14 @@ public class Camera{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "camera_id")
-    private Integer camera_id;
+    private Integer cameraId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "device_id", referencedColumnName = "device_id")
+    @JoinColumn(name = "device", nullable = false)
     private Device device;
 
     @Column(name = "target_id")
@@ -44,17 +43,15 @@ public class Camera{
     @Column(name = "danger_zone")
     private String dangerZone;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
     // Getter/Setter
     public Integer getCameraId() {
-        return camera_id;
+        return cameraId;
     }
 
     public void setCameraId(Integer cameraId) {
-        this.camera_id = cameraId;
+        this.cameraId = cameraId;
     }
+
 
 
     public Integer getDeviceId() {
@@ -101,14 +98,14 @@ public class Camera{
     }
 
     public Integer getUserId() {
-        return userId != null ? userId.getUserId() : null;
+        return user != null ? user.getUserId() : null;
     }
 
     public void setUserId(Integer userId) {
-        if (this.userId == null) {
-            this.userId = new User();
+        if (this.user == null) {
+            this.user = new User();
         }
-        this.userId.setUserId(userId);
+        this.user.setUserId(userId);
     }
     public String getDangerZone() {
         return dangerZone;

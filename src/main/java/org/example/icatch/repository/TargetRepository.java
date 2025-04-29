@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface TargetRepository extends JpaRepository<Target, Integer> {
+
     List<Target> findByUserId(Integer userId);
-    Integer countByUserId(Integer userId);
 }
