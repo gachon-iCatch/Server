@@ -34,6 +34,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "isAdmin")
+    private Boolean isAdmin;
+
     public Integer getUserId() {
         return userId;
     }
@@ -65,4 +68,9 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
 }
