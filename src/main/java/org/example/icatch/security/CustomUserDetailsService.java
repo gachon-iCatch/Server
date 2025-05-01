@@ -1,7 +1,7 @@
 package org.example.icatch.security;
 
-import org.example.icatch.model.User;
-import org.example.icatch.repository.UserRepository;
+import org.example.icatch.User.User;
+import org.example.icatch.User.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
