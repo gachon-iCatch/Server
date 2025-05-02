@@ -25,7 +25,7 @@ public class Camera{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
 
     @ManyToOne
     @JoinColumn(name = "device_id", referencedColumnName = "device_id")
@@ -103,14 +103,14 @@ public class Camera{
     }
 
     public Integer getUserId() {
-        return user != null ? user.getUserId() : null;
+        return userId != null ? userId.getUserId() : null;
     }
 
     public void setUserId(Integer userId) {
-        if (this.user == null) {
-            this.user = new User();
+        if (this.userId == null) {
+            this.userId = new User();
         }
-        this.user.setUserId(userId);
+        this.userId.setUserId(userId);
     }
     public String getDangerZone() {
         return dangerZone;

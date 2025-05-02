@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ActiveLogRepository extends JpaRepository<ActiveLog, Integer> {
     // 수정
-    @Query("SELECT COUNT(l) FROM ActiveLog l JOIN l.camera c WHERE c.user.userId = :userId")
+    @Query("SELECT COUNT(l) FROM ActiveLog l JOIN l.camera c WHERE c.userId.userId = :userId")
     Integer countLogsByUserId(@Param("userId") Integer userId);
 }

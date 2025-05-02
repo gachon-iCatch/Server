@@ -29,7 +29,7 @@ public class DeviceService {
                 .build();
 
         Camera camera = Camera.builder()
-                .user(user)
+                .userId(user)
                 .device(device)
                 .build();
 
