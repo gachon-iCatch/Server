@@ -31,7 +31,7 @@ public class GestureAction {
         SIGNAL("신고 기능"),
         TIME_CAPTURE("시간 찍기"),
         ALARM("알림 ON/OFF"),
-        BLACK_TEXT("\"괜찮아~\" 알림 보내기"),
+        FINE_TEXT("\"괜찮아~\" 알림 보내기"),
         EMERGENCY_TEXT("\"도와줘!\" 알림 보내기"),
         HELP_TEXT("\"불편해 ㅠㅠ\" 알림 보내기"),
         PERSON_TEXT("\"인사하기😊\" 알림 보내기");

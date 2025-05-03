@@ -1,5 +1,6 @@
 package org.example.icatch.Device;
 
+import jakarta.transaction.Transactional;
 import org.example.icatch.Camera.Camera;
 import org.example.icatch.User.User;
 import org.example.icatch.Camera.CameraRepository;
@@ -19,7 +20,8 @@ public class DeviceService {
 
     }
 
-    public DeviceAuthResponse registerDevice(DeviceAuthRequest deviceAuthRequest) {
+    @Transactional
+    public DeviceAuthResponse registerDevice(DeviceAuthRequest deviceAuthRequest, Boolean isSurvey) {
         User user = userRepository.findById(deviceAuthRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -36,8 +38,15 @@ public class DeviceService {
         deviceRepository.save(device);
         cameraRepository.save(camera);
 
+        // 설문조사 과정이라면 사용자 상태 업데이트
+        if (isSurvey != null && isSurvey) {
+            user.setSurveyCompleted(true);
+            userRepository.save(user);
+        }
+
         return DeviceAuthResponse.builder()
                 .deviceId(device.getDeviceId())
+                .deviceIP(device.getDeviceIp())
                 .cameraId(camera.getCameraId())
                 .userId(user.getUserId())
                 .build();

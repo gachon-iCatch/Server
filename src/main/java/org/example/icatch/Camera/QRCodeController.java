@@ -1,7 +1,6 @@
 package org.example.icatch.Camera;
 
 import com.google.zxing.WriterException;
-import org.example.icatch.security.WifiCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

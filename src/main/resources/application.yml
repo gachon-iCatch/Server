@@ -4,7 +4,7 @@ spring:
     #url: jdbc:mysql://localhost:3306/db25104?serverTimezone=Asia/Seoul
     #driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: chltjfbs23!
+    password: root   #chltjfbs23!
 
 
   jpa:
