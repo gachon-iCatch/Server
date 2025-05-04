@@ -49,7 +49,6 @@ public class Camera{
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // Getter/Setter
     public Integer getCameraId() {
         return camera_id;
     }

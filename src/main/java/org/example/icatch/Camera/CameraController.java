@@ -27,7 +27,7 @@ public class CameraController {
     }
 
 
-     //사용자의 모든 카메라 목록 조회
+     //모든 카메라 목록 조회
 
     @GetMapping("/user")
     public ResponseEntity<ApiResponse> getUserCameras() {

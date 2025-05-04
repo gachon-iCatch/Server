@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/qrcode")
-public class QRCodeController {
+public class QRCodeController {  // 여기서 CameraController를 QRCodeController로 변경
 
     @Autowired
     private QRCodeService qrCodeService;
