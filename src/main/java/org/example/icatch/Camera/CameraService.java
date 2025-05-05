@@ -168,6 +168,64 @@ public class CameraService {
     }
 
 
+    @Transactional
+    public boolean deleteCamera(Integer cameraId, Integer userId) {
+        Optional<Camera> optionalCamera = cameraRepository.findById(cameraId);
+        if (!optionalCamera.isPresent()) {
+            throw new RuntimeException("해당 카메라를 찾을 수 없습니다: " + cameraId);
+        }
+
+        Camera camera = optionalCamera.get();
+        if (!camera.getUserId().equals(userId)) {
+            throw new RuntimeException("해당 카메라에 대한 접근 권한이 없습니다");
+        }
+
+        // 관련된 로그, 이미지 등의 연관 데이터도 삭제해야 할 수 있음
+        // 이 부분은 요구사항에 따라 추가 구현이 필요할 수 있음
+
+        cameraRepository.delete(camera);
+        return true;
+    }
+
+    // 서륜님 확인 바람
+    @Transactional(readOnly = true)
+    public int countCamerasByUserId(Integer userId) {
+        return cameraRepository.countByUserId_UserId(userId);
+    }
+
+    // 카메라 연결 상태 확인 메서드 (실제 구현은 시스템에 맞게 조정 필요)
+    public boolean checkCameraConnection(Integer cameraId) {
+        Optional<Camera> optionalCamera = cameraRepository.findById(cameraId);
+        if (!optionalCamera.isPresent()) {
+            return false;
+        }
+
+        Camera camera = optionalCamera.get();
+
+        // 실제 카메라와의 연결 상태를 확인하는 로직 구현
+        // 예: RTSP 스트림 연결 상태 확인 등
+
+        return true; // 임시 구현: 항상 연결됨으로 가정
+    }
+
+    // 카메라 IP 주소 암호화 메서드 (실제 구현은 암호화 방식에 맞게 조정 필요)
+    public String encryptIpAddress(String ipAddress) {
+        if (ipAddress == null || ipAddress.isEmpty()) {
+            return "";
+        }
+
+        // 단순 마스킹 예시 (실제로는 적절한 암호화 알고리즘 사용 권장)
+        String[] parts = ipAddress.split("\\.");
+        if (parts.length == 4) {
+            return parts[0] + "." + parts[1] + ".***" + "." + "***";
+        }
+
+        return "**.**.**.**";
+    }
+
+
+
+
     private boolean isValidDirection(String direction) {
         return direction != null &&
                 (direction.equals("up") ||

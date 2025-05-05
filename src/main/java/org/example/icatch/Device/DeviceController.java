@@ -15,8 +15,9 @@ public class DeviceController {
         this.deviceService = deviceService;
     }
 
-    @PostMapping("/auth/authenticate")
+   @GetMapping("/auth/authenticate")   //Post ->Get 으로 변경함.
     public ResponseEntity<ApiResponse> authenticate(@RequestBody DeviceAuthRequest deviceAuthRequest) {
+
         try{
             // false를 두 번째 매개변수로 추가 (설문조사 아님)
             DeviceAuthResponse data = deviceService.registerDevice(deviceAuthRequest, false);
@@ -27,13 +28,15 @@ public class DeviceController {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
+
+
+
     @PostMapping("/auth/register")
     public ResponseEntity<ApiResponse> registerDevice(
             @RequestBody DeviceAuthRequest deviceAuthRequest,
             @RequestParam(required = false) Boolean isSurvey) {
 
         try {
-            // isSurvey 파라미터로 설문조사인지 일반 등록인지 구분
             DeviceAuthResponse data = deviceService.registerDevice(deviceAuthRequest, isSurvey);
 
             String message;

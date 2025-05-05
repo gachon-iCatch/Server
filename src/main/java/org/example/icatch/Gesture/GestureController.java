@@ -20,12 +20,6 @@ public class GestureController {
         this.gestureService = gestureService;
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse> getAllGestures() {
-        List<Gesture> gestures = gestureService.getAllGestures();
-        return ResponseEntity.ok(ApiResponse.success("Successfully retrieved all gestures", gestures));
-    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse> getUserGestures(@PathVariable Integer userId) {
         List<Gesture> gestures = gestureService.getGesturesByUserId(userId);
@@ -88,5 +82,29 @@ public class GestureController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/{gestureId}")
+    public ResponseEntity<ApiResponse> getGestureById(@PathVariable Integer gestureId) {
+        try {
+            Gesture gesture = gestureService.getGestureById(gestureId);
+            return ResponseEntity.ok(ApiResponse.success("Successfully retrieved gesture", gesture));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/user/{userId}/enable/{isEnabled}")
+    public ResponseEntity<ApiResponse> setAllUserGesturesEnabled(
+            @PathVariable Integer userId,
+            @PathVariable String isEnabled) {
+
+        if (!isEnabled.equals("yes") && !isEnabled.equals("no")) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.error("Invalid value for isEnabled. Must be 'yes' or 'no'."));
+        }
+
+        gestureService.setGesturesEnabledByUser(userId, isEnabled);
+        return ResponseEntity.ok(ApiResponse.success("Successfully updated gestures status"));
     }
 }
