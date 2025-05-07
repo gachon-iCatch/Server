@@ -1,11 +1,19 @@
 package org.example.icatch.Device;
 
-import jakarta.transaction.Transactional;
+
 import org.example.icatch.Camera.Camera;
-import org.example.icatch.User.User;
 import org.example.icatch.Camera.CameraRepository;
+import org.example.icatch.User.User;
 import org.example.icatch.User.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.InputStreamResource;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import java.util.Optional;
 
 @Service
 public class DeviceService {
@@ -20,35 +28,42 @@ public class DeviceService {
 
     }
 
-    @Transactional
-    public DeviceAuthResponse registerDevice(DeviceAuthRequest deviceAuthRequest, Boolean isSurvey) {
-        User user = userRepository.findById(deviceAuthRequest.getUserId())
+    public DeviceAuthResponse registerDevice(DeviceAuthRequest deviceAuthRequest) {
+        Long userIdLong = deviceAuthRequest.getUserId();
+        Integer userId = userIdLong.intValue();
+
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Device device = Device.builder()
-                .deviceIp(deviceAuthRequest.getDeviceIp())
-                .user(user)
-                .build();
+        Device device = new Device();
+        device.setDeviceIp(deviceAuthRequest.getDeviceIp());
+        device.setUser(user);
 
-        Camera camera = Camera.builder()
-                .userId(user)
-                .device(device)
-                .build();
+        Camera camera = new Camera();
+        camera.setUser(user);
+        camera.setDevice(device);
 
         deviceRepository.save(device);
         cameraRepository.save(camera);
 
-        // 설문조사 과정이라면 사용자 상태 업데이트
-        if (isSurvey != null && isSurvey) {
-            user.setSurveyCompleted(true);
-            userRepository.save(user);
-        }
+        return new DeviceAuthResponse(device.getDeviceId(), device.getDeviceIp(), camera.getCameraId());
+    }
 
-        return DeviceAuthResponse.builder()
-                .deviceId(device.getDeviceId())
-                .deviceIP(device.getDeviceIp())
-                .cameraId(camera.getCameraId())
-                .userId(user.getUserId())
-                .build();
+    public DeviceAuthResponse findDevice(Integer userId) {
+        Optional<Device> OptionalDevice = deviceRepository.findFirstByUser_UserIdOrderByCreatedAtDesc(userId);
+        Device device = OptionalDevice.get();
+        Optional<Camera> OptionalCamera = cameraRepository.findFirstByUser_UserIdOrderByCreatedAtDesc(userId);
+        Camera camera = OptionalCamera.get();
+        return new DeviceAuthResponse(device.getDeviceId(),device.getDeviceIp(),camera.getCameraId());
+    }
+
+    public Resource updateModel() throws FileNotFoundException{
+        String modelPath = "/home/t25104/Server/src/main/resources/static/model/best_0414.pt"; // 예시 경로
+        File file = new File(modelPath);
+        if (!file.exists()){
+            return null;
+        }
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        return resource;
     }
 }

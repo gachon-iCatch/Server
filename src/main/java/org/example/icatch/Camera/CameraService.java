@@ -138,12 +138,22 @@ public class CameraService {
             throw new RuntimeException("해당 카메라에 대한 접근 권한이 없습니다");
         }
 
+        // Device에서 IP 가져오기
+        String deviceIp = "";
+        if (camera.getDevice() != null) {
+            deviceIp = camera.getDevice().getDeviceIp();
+        }
+
+        // IP 암호화
+        String encryptedIp = encryptIpAddress(deviceIp);
+
         String streamUrl = "rtsp://stream.example.com/camera/" + cameraId;
 
         return Map.of(
                 "streamUrl", streamUrl,
                 "cameraId", cameraId.toString(),
-                "cameraName", camera.getCameraName()
+                "cameraName", camera.getCameraName(),
+                "deviceIp", encryptedIp  // 암호화된 IP 추가
         );
     }
 
@@ -187,7 +197,6 @@ public class CameraService {
         return true;
     }
 
-    // 서륜님 확인 바람
     @Transactional(readOnly = true)
     public int countCamerasByUserId(Integer userId) {
         return cameraRepository.countByUserId_UserId(userId);
@@ -214,15 +223,14 @@ public class CameraService {
             return "";
         }
 
-        // 단순 마스킹 예시 (실제로는 적절한 암호화 알고리즘 사용 권장)
+        // IP 주소 형식을 확인하고 마지막 옥텟만 표시
         String[] parts = ipAddress.split("\\.");
         if (parts.length == 4) {
-            return parts[0] + "." + parts[1] + ".***" + "." + "***";
+            return "**.**.**."+parts[3];  // 마지막 옥텟만 표시
         }
 
         return "**.**.**.**";
     }
-
 
 
 
@@ -245,6 +253,14 @@ public class CameraService {
         dto.setIsEnabled(camera.getIsEnabled());
         dto.setMotionDetectionEnabled(camera.getMotionDetectionEnabled());
         dto.setDangerZone(camera.getDangerZone());
+
+        // Device IP 추가 및 암호화
+        String deviceIp = "";
+        if (camera.getDevice() != null) {
+            deviceIp = camera.getDevice().getDeviceIp();
+        }
+        dto.setDeviceIp(encryptIpAddress(deviceIp)); // 암호화된 IP 설정
+
         return dto;
     }
 }

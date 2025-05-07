@@ -38,4 +38,5 @@ logging:
     org.example.icatch: DEBUG  # 프로젝트 패키지명으로 변경하세요
 
 server:
-  port: 60004
+  address: 0.0.0.0
+  port: 8080

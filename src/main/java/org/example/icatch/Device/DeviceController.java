@@ -5,6 +5,13 @@ import org.example.icatch.security.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/device")
@@ -15,12 +22,10 @@ public class DeviceController {
         this.deviceService = deviceService;
     }
 
-   @GetMapping("/auth/authenticate")   //Post ->Get 으로 변경함.
+    @PostMapping("/auth/authenticate")
     public ResponseEntity<ApiResponse> authenticate(@RequestBody DeviceAuthRequest deviceAuthRequest) {
-
         try{
-            // false를 두 번째 매개변수로 추가 (설문조사 아님)
-            DeviceAuthResponse data = deviceService.registerDevice(deviceAuthRequest, false);
+            DeviceAuthResponse data = deviceService.registerDevice(deviceAuthRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(ApiResponse.success("디바이스 등록이 완료되었습니다", data));
 
@@ -28,26 +33,27 @@ public class DeviceController {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
+    @GetMapping("/auth/authenticate")
+    public ResponseEntity<ApiResponse> getAuthenticate(@RequestParam Integer userId) {
+        try{
 
-
-
-    @PostMapping("/auth/register")
-    public ResponseEntity<ApiResponse> registerDevice(
-            @RequestBody DeviceAuthRequest deviceAuthRequest,
-            @RequestParam(required = false) Boolean isSurvey) {
-
-        try {
-            DeviceAuthResponse data = deviceService.registerDevice(deviceAuthRequest, isSurvey);
-
-            String message;
-            if (isSurvey != null && isSurvey == true) {
-                message = "설문조사 디바이스 등록이 완료되었습니다";
-            } else {
-                message = "디바이스 등록이 완료되었습니다";
-            }
-
+            DeviceAuthResponse data = deviceService.findDevice(userId);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(ApiResponse.success(message, data));
+                    .body(ApiResponse.success("데이터 전송에 성공하였습니다", data));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+    @GetMapping("/model/update")
+    public ResponseEntity<?> getAuthenticate() {
+        try{
+            Resource resource = deviceService.updateModel();
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"model.pt\"")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
