@@ -29,8 +29,7 @@ public class DeviceService {
     }
 
     public DeviceAuthResponse registerDevice(DeviceAuthRequest deviceAuthRequest) {
-        Long userIdLong = deviceAuthRequest.getUserId();
-        Integer userId = userIdLong.intValue();
+        Long userId = deviceAuthRequest.getUserId();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -38,12 +37,13 @@ public class DeviceService {
         Device device = new Device();
         device.setDeviceIp(deviceAuthRequest.getDeviceIp());
         device.setUser(user);
+        deviceRepository.save(device);
 
         Camera camera = new Camera();
-        camera.setUser(user);
-        camera.setDevice(device);
+        camera.setUserId(user.getUserId());
+        camera.setDeviceId(device);
 
-        deviceRepository.save(device);
+
         cameraRepository.save(camera);
 
         return new DeviceAuthResponse(device.getDeviceId(), device.getDeviceIp(), camera.getCameraId());
@@ -52,7 +52,7 @@ public class DeviceService {
     public DeviceAuthResponse findDevice(Integer userId) {
         Optional<Device> OptionalDevice = deviceRepository.findFirstByUser_UserIdOrderByCreatedAtDesc(userId);
         Device device = OptionalDevice.get();
-        Optional<Camera> OptionalCamera = cameraRepository.findFirstByUser_UserIdOrderByCreatedAtDesc(userId);
+        Optional<Camera> OptionalCamera = cameraRepository.findFirstByUserId_UserIdOrderByCreatedAtDesc(userId);
         Camera camera = OptionalCamera.get();
         return new DeviceAuthResponse(device.getDeviceId(),device.getDeviceIp(),camera.getCameraId());
     }
