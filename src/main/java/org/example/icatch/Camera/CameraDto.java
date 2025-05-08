@@ -17,4 +17,5 @@ public class CameraDto {
     private String isEnabled;
     private Boolean motionDetectionEnabled;
     private String dangerZone;
+    private String deviceIp;
 }

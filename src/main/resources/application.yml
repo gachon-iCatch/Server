@@ -3,8 +3,8 @@ spring:
     url: jdbc:mysql://localhost:3306/icatch
     #url: jdbc:mysql://localhost:3306/db25104?serverTimezone=Asia/Seoul
     #driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: chltjfbs23!
+    username: root #dbid251 #root
+    password: root #dbpass251  #chltjfbs23!
 
 
   jpa:
@@ -38,4 +38,5 @@ logging:
     org.example.icatch: DEBUG  # 프로젝트 패키지명으로 변경하세요
 
 server:
-  port: 60004
+  address: 0.0.0.0
+  port: 8080

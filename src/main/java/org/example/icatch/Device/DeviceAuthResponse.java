@@ -14,5 +14,6 @@ public class DeviceAuthResponse {
     long deviceId;
     String deviceIP;
     long cameraId;
-    long userId;
+    //수정함(수림)
+    Integer userId;
 }

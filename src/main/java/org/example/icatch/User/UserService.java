@@ -62,4 +62,13 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + email));
     }
+
+    @Transactional
+    public User completeSurvey(Integer userId) {
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        user.setSurveyCompleted(true);
+        return userRepository.save(user);
+    }
 }

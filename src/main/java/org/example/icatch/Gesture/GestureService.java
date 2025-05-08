@@ -112,4 +112,19 @@ public class GestureService {
 
         gestureRepository.deleteById(gestureId);
     }
+
+    @Transactional
+    public Gesture getGestureById(Integer gestureId) {
+        return gestureRepository.findById(gestureId)
+                .orElseThrow(() -> new NoSuchElementException("Gesture not found with ID: " + gestureId));
+    }
+
+    @Transactional
+    public void setGesturesEnabledByUser(Integer userId, String isEnabled) {
+        List<Gesture> userGestures = gestureRepository.findByUserId(userId);
+        for (Gesture gesture : userGestures) {
+            gesture.setIsEnabled(isEnabled);
+        }
+        gestureRepository.saveAll(userGestures);
+    }
 }

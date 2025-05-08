@@ -1,4 +1,4 @@
-package org.example.icatch.security;
+package org.example.icatch.config;
 
 
 import org.springframework.context.annotation.Configuration;

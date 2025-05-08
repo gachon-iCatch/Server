@@ -37,6 +37,9 @@ public class User {
     @Column(name = "isAdmin")
     private Boolean isAdmin;
 
+    @Column(name = "survey_completed")
+    private Boolean surveyCompleted = false;
+
     public Integer getUserId() {
         return userId;
     }
@@ -71,6 +74,14 @@ public class User {
 
     public Boolean getIsAdmin() {
         return isAdmin;
+    }
+
+    public Boolean isSurveyCompleted() {
+        return surveyCompleted != null && surveyCompleted;
+    }
+
+    public void setSurveyCompleted(Boolean surveyCompleted) {
+        this.surveyCompleted = surveyCompleted;
     }
 
 }

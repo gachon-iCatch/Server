@@ -1,8 +1,15 @@
-package org.example.icatch.security;
+package org.example.icatch.Camera;
 
 public class WifiCredentials {
     private String wifiId;
     private String wifiPassword;
+
+    public WifiCredentials() {}
+
+    public WifiCredentials(String wifiId, String wifiPassword) {
+        this.wifiId = wifiId;
+        this.wifiPassword = wifiPassword;
+    }
 
     public String getWifiId() {
         return wifiId;

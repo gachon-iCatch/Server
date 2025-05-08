@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/monitoring/targets")
@@ -47,6 +49,64 @@ public class TargetController {
 
             response.put("success", true);
             response.put("targetId", targetId);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    //목록 조회
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getTargetsByUserId(@PathVariable Integer userId) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            List<Target> targets = targetService.getTargetsByUserId(userId);
+            List<TargetResponseDTO> targetDTOs = targets.stream()
+                    .map(TargetResponseDTO::new)
+                    .collect(Collectors.toList());
+
+            response.put("success", true);
+            response.put("targets", targetDTOs);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    // 삭제
+    @DeleteMapping("/{targetId}")
+    public ResponseEntity<?> deleteTarget(@PathVariable Integer targetId) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            targetService.deleteTarget(targetId);
+
+            response.put("success", true);
+            response.put("message", "타겟이 성공적으로 삭제되었습니다.");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PutMapping("/{targetId}")
+    public ResponseEntity<?> updateTarget(@PathVariable Integer targetId, @RequestBody TargetUpdateRequest request) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            targetService.updateTarget(targetId, request);
+
+            response.put("success", true);
+            response.put("message", "타겟이 성공적으로 업데이트되었습니다.");
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {

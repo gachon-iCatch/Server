@@ -1,7 +1,6 @@
 package org.example.icatch.Camera;
 
 import com.google.zxing.WriterException;
-import org.example.icatch.security.WifiCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/qrcode")
-public class QRCodeController {
+public class QRCodeController {  // 여기서 CameraController를 QRCodeController로 변경
 
     @Autowired
     private QRCodeService qrCodeService;
