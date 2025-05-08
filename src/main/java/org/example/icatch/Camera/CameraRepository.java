@@ -13,5 +13,5 @@ public interface CameraRepository extends JpaRepository<Camera, Integer> {
 
     Integer countByUserId_UserId(Integer userId);
 
-    Optional<Camera> findFirstByUser_UserIdOrderByCreatedAtDesc(Integer userId);
+    Optional<Camera> findFirstByUserId_UserIdOrderByCreatedAtDesc(Integer userId);
 }

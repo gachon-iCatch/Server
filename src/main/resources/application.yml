@@ -1,10 +1,10 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/icatch
-    #url: jdbc:mysql://localhost:3306/db25104?serverTimezone=Asia/Seoul
+    #url: jdbc:mysql://localhost:3306/icatch
+    url: jdbc:mysql://localhost:3306/db25104?serverTimezone=Asia/Seoul
     #driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root #dbid251 #root
-    password: root #dbpass251  #chltjfbs23!
+    username: dbid251 #dbid251 #root
+    password: dbpass251 #dbpass251  #chltjfbs23!
 
 
   jpa:
@@ -39,4 +39,4 @@ logging:
 
 server:
   address: 0.0.0.0
-  port: 8080
+  port: 60004

@@ -28,7 +28,7 @@ public class Camera{
     private User userId;
 
     @ManyToOne
-    @JoinColumn(name = "device_id", referencedColumnName = "device_id")
+    @JoinColumn(name = "device_id")
     private Device device;
 
     @Column(name = "target_id")
