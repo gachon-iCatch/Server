@@ -29,8 +29,7 @@ public class DeviceService {
     }
 
     public DeviceAuthResponse registerDevice(DeviceAuthRequest deviceAuthRequest) {
-        Long userIdLong = deviceAuthRequest.getUserId();
-        Integer userId = userIdLong.intValue();
+        Long userId = deviceAuthRequest.getUserId();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -40,7 +39,7 @@ public class DeviceService {
         device.setUser(user);
 
         Camera camera = new Camera();
-        camera.setUser(user);
+        camera.setUserId(user.getUserId());
         camera.setDevice(device);
 
         deviceRepository.save(device);
