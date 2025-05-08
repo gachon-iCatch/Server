@@ -27,7 +27,7 @@ public class Camera{
     @JoinColumn(name = "user_id")
     private User userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "device_id", referencedColumnName = "device_id")
     private Device device;
 
@@ -63,13 +63,8 @@ public class Camera{
     }
 
     public void setDeviceId(Integer deviceId) {
-        if (deviceId == null) {
-            this.device = null;
-            return;
-        }
-
         if (this.device == null) {
-            this.device = new Device();
+            this.device = new Device(); // 기본 생성자 있어야 함
         }
         this.device.setDeviceId(deviceId);
     }
