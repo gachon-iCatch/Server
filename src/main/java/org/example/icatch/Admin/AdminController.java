@@ -46,7 +46,7 @@ public class AdminController {
         }
     }
     @DeleteMapping("/users")
-    public ResponseEntity<ApiResponse> deleteUser(@RequestParam("userId") Long userId) {
+    public ResponseEntity<ApiResponse> deleteUser(@RequestParam("userId") Integer userId) {
         adminService.deleteUser(userId);
         return ResponseEntity.ok(ApiResponse.success("유저 삭제 완료"));
     }

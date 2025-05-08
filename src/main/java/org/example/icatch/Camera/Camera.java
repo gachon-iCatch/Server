@@ -25,9 +25,9 @@ public class Camera{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id", referencedColumnName = "device_id")
     private Device device;
 
@@ -63,11 +63,18 @@ public class Camera{
     }
 
     public void setDeviceId(Integer deviceId) {
+        if (deviceId == null) {
+            this.device = null;
+            return;
+        }
+
         if (this.device == null) {
-            this.device = new Device(); // 기본 생성자 있어야 함
+
+            this.device = new Device();
         }
         this.device.setDeviceId(deviceId);
     }
+
 
     public Integer getTargetId() {
         return targetId;
@@ -101,16 +108,30 @@ public class Camera{
         this.motionDetectionEnabled = motionDetectionEnabled;
     }
 
+    public void setDevice(Device device) {
+        this.device = device;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Integer getUserId() {
-        return userId != null ? userId.getUserId() : null;
+        return user != null ? user.getUserId() : null;
     }
 
     public void setUserId(Integer userId) {
-        if (this.userId == null) {
-            this.userId = new User();
+        if (userId == null) {
+            this.user = null;
+            return;
         }
-        this.userId.setUserId(userId);
+
+        if (this.user == null) {
+            this.user = new User();
+        }
+        this.user.setUserId(userId);
     }
+
     public String getDangerZone() {
         return dangerZone;
     }

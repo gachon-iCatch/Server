@@ -21,7 +21,7 @@ public class ActiveLog {
     private Integer logId;
 
     @ManyToOne
-    @JoinColumn(name = "camera_id", nullable = false)
+    @JoinColumn(name = "camera_id")
     private Camera camera;
 
     @Column(name = "log_text")

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class DeviceAuthRequest {
     private String deviceIp;
-    private Long  userId;
+    private Integer  userId;
 }

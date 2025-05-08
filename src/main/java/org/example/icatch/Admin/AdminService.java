@@ -58,7 +58,7 @@ public class AdminService {
         return userResponse;
     }
 
-    public void deleteUser(Long userId) {
+    public void deleteUser(Integer userId) {
         userRepository.deleteById(userId);
     }
 }

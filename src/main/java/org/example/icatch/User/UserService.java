@@ -65,7 +65,7 @@ public class UserService {
 
     @Transactional
     public User completeSurvey(Integer userId) {
-        User user = userRepository.findById(Long.valueOf(userId))
+        User user = userRepository.findById(Integer.valueOf(userId))
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         user.setSurveyCompleted(true);

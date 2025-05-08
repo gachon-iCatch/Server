@@ -1,11 +1,14 @@
 package org.example.icatch.Camera;
 
+import org.example.icatch.Device.Device;
+import org.example.icatch.Device.DeviceRepository;
 import org.example.icatch.User.User;
 import org.example.icatch.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -69,15 +72,25 @@ public class CameraService {
         return camera.getDangerZone();
     }
 
+    @Autowired
+    private DeviceRepository deviceRepository; // 추가 필요
+
     @Transactional
     public Integer setupCamera(Integer userId, Integer deviceId, Integer targetId, String cameraName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + userId));
+
+        Device device = deviceRepository.findById(Long.valueOf(deviceId))
+                .orElseThrow(() -> new IllegalArgumentException("디바이스를 찾을 수 없습니다: " + deviceId));
+
         Camera camera = new Camera();
-        camera.setUserId(userId);
-        camera.setDeviceId(deviceId);
+        camera.setUser(user);
+        camera.setDevice(device);
         camera.setTargetId(targetId);
         camera.setCameraName(cameraName);
         camera.setIsEnabled("yes");
         camera.setMotionDetectionEnabled(true);
+        camera.setCreatedAt(LocalDateTime.now());
 
         Camera savedCamera = cameraRepository.save(camera);
         return savedCamera.getCameraId();
@@ -102,7 +115,7 @@ public class CameraService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + email));
 
-        List<Camera> cameras = cameraRepository.findByUserId_UserId(user.getUserId());
+        List<Camera> cameras = cameraRepository.findByUser_UserId(user.getUserId());
 
         return cameras.stream()
                 .map(this::convertToDto)
@@ -199,7 +212,7 @@ public class CameraService {
 
     @Transactional(readOnly = true)
     public int countCamerasByUserId(Integer userId) {
-        return cameraRepository.countByUserId_UserId(userId);
+        return cameraRepository.countByUser_UserId(userId);
     }
 
     // 카메라 연결 상태 확인 메서드 (실제 구현은 시스템에 맞게 조정 필요)

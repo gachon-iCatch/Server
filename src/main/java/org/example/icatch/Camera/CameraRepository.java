@@ -9,9 +9,7 @@ import java.util.Optional;
 @Repository
 public interface CameraRepository extends JpaRepository<Camera, Integer> {
     // 수정
-    List<Camera> findByUserId_UserId(Integer userId);
-
-    Integer countByUserId_UserId(Integer userId);
-
-    Optional<Camera> findFirstByUserId_UserIdOrderByCreatedAtDesc(Integer userId);
+    List<Camera> findByUser_UserId(Integer userId);
+    Integer countByUser_UserId(Integer userId);
+    Optional<Camera> findFirstByUser_UserIdOrderByCreatedAtDesc(Integer userId);
 }

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class DeviceAuthResponse {
     // 수정
@@ -16,7 +15,18 @@ public class DeviceAuthResponse {
     long cameraId;
     //수정함(수림)
     Integer userId;
-    public DeviceAuthResponse(Integer deviceId, String deviceIp, Integer cameraId) {
+
+    public DeviceAuthResponse(long deviceId, String deviceIP, long cameraId, Integer userId) {
+        this.deviceId = deviceId;
+        this.deviceIP = deviceIP;
+        this.cameraId = cameraId;
+        this.userId = userId;
     }
 
+    public DeviceAuthResponse(Integer deviceId, String deviceIp, Integer cameraId) {
+        this.deviceId = deviceId;
+        this.deviceIP = deviceIp;
+        this.cameraId = cameraId;
+        this.userId = null;
+    }
 }

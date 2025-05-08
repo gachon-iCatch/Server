@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -27,10 +28,8 @@ public class DeviceService {
         this.cameraRepository = cameraRepository;
 
     }
-
     public DeviceAuthResponse registerDevice(DeviceAuthRequest deviceAuthRequest) {
-        Long userIdLong = deviceAuthRequest.getUserId();
-        Integer userId = userIdLong.intValue();
+        Integer userId = deviceAuthRequest.getUserId().intValue();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -38,13 +37,13 @@ public class DeviceService {
         Device device = new Device();
         device.setDeviceIp(deviceAuthRequest.getDeviceIp());
         device.setUser(user);
+        device = deviceRepository.save(device);
 
         Camera camera = new Camera();
         camera.setUser(user);
         camera.setDevice(device);
-
-        deviceRepository.save(device);
-        cameraRepository.save(camera);
+        camera.setCreatedAt(LocalDateTime.now());
+        camera = cameraRepository.save(camera);
 
         return new DeviceAuthResponse(device.getDeviceId(), device.getDeviceIp(), camera.getCameraId());
     }
