@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -59,5 +60,23 @@ public class GestureActionService {
         GestureAction action = getGestureActionById(actionId);
         action.setMessage(message);
         return gestureActionRepository.save(action);
+    }
+    public List<GestureAction> findByFunction(GestureAction.SelectedFunction function) {
+        if (function == null) {
+            return Collections.emptyList();
+        }
+
+        switch (function) {
+            case BLACK_SCREEN:
+                return gestureActionRepository.findByBlackScreen(GestureAction.EnabledStatus.enabled);
+            case SIGNAL:
+                return gestureActionRepository.findBySendAlert(GestureAction.EnabledStatus.enabled);
+            case TIME_CAPTURE:
+                return gestureActionRepository.findByCapture(GestureAction.EnabledStatus.enabled);
+            case ALARM:
+                return gestureActionRepository.findByNotifications(GestureAction.EnabledStatus.enabled);
+            default:
+                return Collections.emptyList();
+        }
     }
 }

@@ -34,7 +34,7 @@ public class PictureService {
 
     @Transactional(readOnly = true)
     public List<PictureResponseDTO> getPicturesByDeviceId(Integer deviceId) {
-        List<Picture> pictures = pictureRepository.findByDeviceIdOrderByCaptureTimeDesc(deviceId);
+        List<Picture> pictures = pictureRepository.findByDevice_DeviceIdOrderByCaptureTimeDesc(deviceId);
         return pictures.stream()
                 .map(PictureResponseDTO::new)
                 .collect(Collectors.toList());

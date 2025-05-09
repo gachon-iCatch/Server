@@ -7,5 +7,9 @@ import java.util.List;
 
 @Repository
 public interface GestureActionRepository extends JpaRepository<GestureAction, Integer> {
-    List<GestureAction> findBySelectedFunction(GestureAction.SelectedFunction selectedFunction);
+
+    List<GestureAction> findByBlackScreen(GestureAction.EnabledStatus status);
+    List<GestureAction> findBySendAlert(GestureAction.EnabledStatus status);
+    List<GestureAction> findByCapture(GestureAction.EnabledStatus status);
+    List<GestureAction> findByNotifications(GestureAction.EnabledStatus status);
 }

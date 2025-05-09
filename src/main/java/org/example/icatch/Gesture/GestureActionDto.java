@@ -14,5 +14,4 @@ public class GestureActionDto {
     private String isEnabled;
     private GestureAction.SelectedFunction selectedFunction;
     private String message;
-
 }
