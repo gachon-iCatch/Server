@@ -14,11 +14,14 @@ import java.util.NoSuchElementException;
 public class GestureController {
 
     private final GestureService gestureService;
+    private final GestureActionRepository gestureActionRepository;
 
     @Autowired
-    public GestureController(GestureService gestureService) {
+    public GestureController(GestureService gestureService, GestureActionRepository gestureActionRepository) {  // 수정
         this.gestureService = gestureService;
+        this.gestureActionRepository = gestureActionRepository;
     }
+
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponse> getUserGestures(@PathVariable Integer userId) {
@@ -76,14 +79,33 @@ public class GestureController {
         String selectedFunction = request.get("selectedFunction");
         try {
             Gesture updatedGesture = gestureService.selectGestureFunction(gestureId, selectedFunction);
-            return ResponseEntity.ok(ApiResponse.success("Successfully selected function for gesture", updatedGesture));
+
+            // DTO로 변환하여 반환
+            GestureActionDto dto = new GestureActionDto();
+            dto.setGestureId(updatedGesture.getGestureId());
+            dto.setUserId(updatedGesture.getUserId());
+            dto.setCameraId(updatedGesture.getCameraId());
+            dto.setGestureName(updatedGesture.getGestureName());
+            dto.setGestureType(updatedGesture.getGestureType());
+            dto.setGestureDescription(updatedGesture.getGestureDescription());
+            dto.setGestureImagePath(updatedGesture.getGestureImagePath());
+            dto.setIsEnabled(updatedGesture.getIsEnabled());
+
+            if (updatedGesture.getActionId() != null) {
+                GestureAction action = gestureActionRepository.findById(updatedGesture.getActionId()).orElse(null);
+                if (action != null) {
+                    dto.setSelectedFunction(action.getSelectedFunction());
+                    dto.setMessage(action.getMessage());
+                }
+            }
+
+            return ResponseEntity.ok(ApiResponse.success("Successfully selected function for gesture", dto));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }
-
     @GetMapping("/{gestureId}")
     public ResponseEntity<ApiResponse> getGestureById(@PathVariable Integer gestureId) {
         try {
