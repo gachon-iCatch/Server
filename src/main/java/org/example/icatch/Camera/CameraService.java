@@ -230,19 +230,14 @@ public class CameraService {
         return true; // 임시 구현: 항상 연결됨으로 가정
     }
 
-    // 카메라 IP 주소 암호화 메서드 (실제 구현은 암호화 방식에 맞게 조정 필요)
+// 카메라 IP 주소 다 보이도록 수정
     public String encryptIpAddress(String ipAddress) {
         if (ipAddress == null || ipAddress.isEmpty()) {
             return "";
         }
 
-        // IP 주소 형식을 확인하고 마지막 옥텟만 표시
-        String[] parts = ipAddress.split("\\.");
-        if (parts.length == 4) {
-            return "**.**.**."+parts[3];  // 마지막 옥텟만 표시
-        }
-
-        return "**.**.**.**";
+        // 원본 IP 주소 그대로 반환
+        return ipAddress;
     }
 
 

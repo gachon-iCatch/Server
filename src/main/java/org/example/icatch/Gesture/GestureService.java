@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -127,4 +128,33 @@ public class GestureService {
         }
         gestureRepository.saveAll(userGestures);
     }
+    public List<GestureActionDto> getGesturesWithActionsByUserId(Integer userId) {
+        List<Gesture> gestures = gestureRepository.findByUserId(userId);
+        List<GestureActionDto> result = new ArrayList<>();
+
+        for (Gesture gesture : gestures) {
+            GestureActionDto dto = new GestureActionDto();
+            dto.setGestureId(gesture.getGestureId());
+            dto.setUserId(gesture.getUserId());
+            dto.setCameraId(gesture.getCameraId());
+            dto.setGestureName(gesture.getGestureName());
+            dto.setGestureType(gesture.getGestureType());
+            dto.setGestureDescription(gesture.getGestureDescription());
+            dto.setGestureImagePath(gesture.getGestureImagePath());
+            dto.setIsEnabled(gesture.getIsEnabled());
+
+            if (gesture.getActionId() != null) {
+                GestureAction action = gestureActionRepository.findById(gesture.getActionId()).orElse(null);
+                if (action != null) {
+                    dto.setSelectedFunction(action.getSelectedFunction());
+                    dto.setMessage(action.getMessage());
+                }
+            }
+
+            result.add(dto);
+        }
+
+        return result;
+    }
+
 }

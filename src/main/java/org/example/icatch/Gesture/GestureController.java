@@ -20,7 +20,7 @@ public class GestureController {
         this.gestureService = gestureService;
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponse> getUserGestures(@PathVariable Integer userId) {
         List<Gesture> gestures = gestureService.getGesturesByUserId(userId);
         return ResponseEntity.ok(ApiResponse.success("Successfully retrieved user gestures", gestures));
@@ -106,5 +106,10 @@ public class GestureController {
 
         gestureService.setGesturesEnabledByUser(userId, isEnabled);
         return ResponseEntity.ok(ApiResponse.success("Successfully updated gestures status"));
+    }
+    @GetMapping("/user/{userId}/with-actions")
+    public ResponseEntity<ApiResponse> getUserGesturesWithActions(@PathVariable Integer userId) {
+        List<GestureActionDto> gestures = gestureService.getGesturesWithActionsByUserId(userId);
+        return ResponseEntity.ok(ApiResponse.success("Successfully retrieved user gestures with actions", gestures));
     }
 }

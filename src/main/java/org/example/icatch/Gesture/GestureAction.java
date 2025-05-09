@@ -23,7 +23,7 @@ public class GestureAction {
     @Enumerated(EnumType.STRING)
     private GestureAction.SelectedFunction selectedFunction;
 
-    @Column(name = "message")
+    @Column(name = "message", columnDefinition = "text")
     private String message;
 
     public enum SelectedFunction {
@@ -45,5 +45,28 @@ public class GestureAction {
         public String getDescription() {
             return description;
         }
+    }
+    public Integer getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(Integer actionId) {
+        this.actionId = actionId;
+    }
+
+    public SelectedFunction getSelectedFunction() {
+        return selectedFunction;
+    }
+
+    public void setSelectedFunction(SelectedFunction selectedFunction) {
+        this.selectedFunction = selectedFunction;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

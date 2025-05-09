@@ -9,4 +9,5 @@ import java.util.List;
 public interface TargetRepository extends JpaRepository<Target, Integer> {
 
     List<Target> findByUserId(Integer userId);
+    long countByUserId(Integer userId);
 }

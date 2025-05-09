@@ -95,10 +95,7 @@ public class CameraController {
     }
 
     @PostMapping("/setup")
-    public ResponseEntity<ApiResponse> setupCamera(
-            @RequestParam Integer deviceId,
-            @RequestParam Integer targetId,
-            @RequestParam String cameraName) {
+    public ResponseEntity<ApiResponse> setupCamera(@RequestBody CameraSetupRequest request) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
@@ -110,7 +107,8 @@ public class CameraController {
             }
 
             Integer userId = user.getUserId();
-            Integer cameraId = cameraService.setupCamera(userId, deviceId, targetId, cameraName);
+            Integer cameraId = cameraService.setupCamera(userId, request.getDeviceId(),
+                    request.getTargetId(), request.getCameraName());
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(ApiResponse.success("카메라가 성공적으로 설정되었습니다", Map.of("cameraId", cameraId)));
         } catch (Exception e) {

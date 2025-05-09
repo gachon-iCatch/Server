@@ -13,9 +13,8 @@ import java.util.List;
 
 @Service
 public class PictureService {
-
     private final PictureRepository pictureRepository;
-    private final String uploadDir = "/path/to/images/"; // 실제 이미지가 저장된 디렉토리 경로로 변경 필요
+    private final String uploadDir = "/home/t25104/Server/image"; // 실제 이미지가 저장된 디렉토리 경로로 변경 필요
 
     @Autowired
     public PictureService(PictureRepository pictureRepository) {

@@ -1,6 +1,5 @@
 package org.example.icatch.Camera;
 
-import org.example.icatch.Camera.Camera;
 
 // 카메라 정보를 담는 DTO 클래스
 public class CameraResponseDTO {

@@ -3,6 +3,10 @@ package org.example.icatch.User;
 import org.example.icatch.Camera.Camera;
 import org.example.icatch.Camera.CameraDto;
 import org.example.icatch.Camera.CameraService;
+import org.example.icatch.Gesture.Gesture;
+import org.example.icatch.Gesture.GestureService;
+import org.example.icatch.Target.Target;
+import org.example.icatch.Target.TargetService;
 import org.example.icatch.security.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,11 +25,16 @@ public class ProfileController {
 
     private final UserService userService;
     private final CameraService cameraService;
+    private final TargetService targetService;
+    private final GestureService gestureService;
 
     @Autowired
-    public ProfileController(UserService userService, CameraService cameraService) {
+    public ProfileController(UserService userService, CameraService cameraService,
+                             TargetService targetService, GestureService gestureService) {
         this.userService = userService;
         this.cameraService = cameraService;
+        this.targetService = targetService;
+        this.gestureService = gestureService;
     }
 
     @GetMapping
@@ -40,17 +49,33 @@ public class ProfileController {
                         .body(ApiResponse.error("인증된 사용자를 찾을 수 없습니다"));
             }
 
-            // 사용자 프로필 정보 조회 (개인정보는 제외)
-            Map<String, Object> profileInfo = new HashMap<>();
-            profileInfo.put("userId", user.getUserId());
-            profileInfo.put("nickname", user.getUserNickname());
-            profileInfo.put("email", user.getEmail());
+            // UserProfileDto 객체 생성 및 사용자 정보 설정
+            UserProfileDto profileDto = new UserProfileDto();
+            profileDto.setUserId(user.getUserId());
+            profileDto.setUsernickname(user.getUserNickname());
+            profileDto.setEmail(user.getEmail());
 
-            return ResponseEntity.ok(ApiResponse.success("사용자 프로필 정보를 성공적으로 조회했습니다", profileInfo));
+            // 카메라 개수 설정
+            List<CameraDto> cameras = cameraService.getCamerasByUserEmail(email);
+            profileDto.setCameraCount(cameras.size());
+
+            // 타겟 개수 설정
+            List<Target> targets = targetService.getTargetsByUserId(user.getUserId());
+            profileDto.setTargetCount(targets.size());
+
+            // 제스처 개수 설정
+            List<Gesture> gestures = gestureService.getGesturesByUserId(user.getUserId());
+            profileDto.setGestureCount(gestures.size());
+
+            // 알림 설정은 아직 구현되지 않았으므로 기본값으로 설정
+            profileDto.setNotificationEnabled(false);
+
+            return ResponseEntity.ok(ApiResponse.success("사용자 프로필 정보를 성공적으로 조회했습니다", profileDto));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
+
 
     @GetMapping("/cameras")
     public ResponseEntity<ApiResponse> getUserCameras() {
@@ -117,4 +142,5 @@ public class ProfileController {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
+
 }

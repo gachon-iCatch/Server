@@ -11,8 +11,11 @@ public interface GestureRepository extends JpaRepository<Gesture, Integer> {
     List<Gesture> findByUserId(Integer userId);
 
     List<Gesture> findByCameraId(Integer cameraId);
+    long countByUserId(Integer userId);
+
 
     List<Gesture> findByUserIdAndCameraId(Integer userId, Integer cameraId);
 
     List<Gesture> findByIsEnabled(String isEnabled);
+
 }

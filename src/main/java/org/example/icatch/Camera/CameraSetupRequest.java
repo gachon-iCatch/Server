@@ -4,6 +4,7 @@ public class CameraSetupRequest {
     private Integer userId;
     private Integer deviceId;
     private String cameraName;
+    private Integer targetId;
     private String target_Type;
 
     public CameraSetupRequest() {
@@ -13,6 +14,14 @@ public class CameraSetupRequest {
         this.userId = userId;
         this.deviceId = deviceId;
         this.cameraName = cameraName;
+        this.target_Type = target_Type;
+    }
+
+    public CameraSetupRequest(Integer userId, Integer deviceId, String cameraName, Integer targetId, String target_Type) {
+        this.userId = userId;
+        this.deviceId = deviceId;
+        this.cameraName = cameraName;
+        this.targetId = targetId;
         this.target_Type = target_Type;
     }
 
@@ -38,6 +47,14 @@ public class CameraSetupRequest {
 
     public void setCameraName(String cameraName) {
         this.cameraName = cameraName;
+    }
+
+    public Integer getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(Integer targetId) {
+        this.targetId = targetId;
     }
 
     public String getTarget_Type() {
