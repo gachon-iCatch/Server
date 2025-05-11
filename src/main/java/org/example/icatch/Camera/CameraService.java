@@ -240,6 +240,11 @@ public class CameraService {
         return ipAddress;
     }
 
+    @Transactional(readOnly = true)
+    public Camera getCameraById(Integer cameraId) {
+        return cameraRepository.findById(cameraId)
+                .orElseThrow(() -> new IllegalArgumentException("카메라를 찾을 수 없습니다: " + cameraId));
+    }
 
 
     private boolean isValidDirection(String direction) {

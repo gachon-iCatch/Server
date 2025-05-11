@@ -22,7 +22,8 @@ public class JwtTokenProvider {
 
     public JwtTokenProvider(
             @Value("${security.jwt.token.secret-key:a37sdl28ydh38gsl39syw72jsk10pq59abcdefghijklmnopqrstuvwxyz123456789}") String secretKey,
-            @Value("${security.jwt.token.expire-length:3600000}") long validityInMilliseconds,
+            @Value("${security.jwt.token.expire-length:259200000}") long validityInMilliseconds,
+
             UserDetailsService userDetailsService) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.validityInMilliseconds = validityInMilliseconds;
