@@ -1,5 +1,7 @@
 package org.example.icatch.User;
 
+import jakarta.transaction.Transactional;
+import org.example.icatch.Camera.Camera;
 import org.example.icatch.Camera.CameraDto;
 import org.example.icatch.Camera.CameraService;
 import org.example.icatch.Gesture.Gesture;
@@ -26,18 +28,14 @@ public class ProfileController {
     private final CameraService cameraService;
     private final TargetService targetService;
     private final GestureService gestureService;
-    private final SettingService settingService;
-    private SettingRepository settingRepository;
 
     @Autowired
     public ProfileController(UserService userService, CameraService cameraService,
-                             TargetService targetService, GestureService gestureService,
-                             SettingService settingService) {
+                             TargetService targetService, GestureService gestureService) {
         this.userService = userService;
         this.cameraService = cameraService;
         this.targetService = targetService;
         this.gestureService = gestureService;
-        this.settingService = settingService;
     }
 
     @GetMapping
@@ -70,9 +68,7 @@ public class ProfileController {
             List<Gesture> gestures = gestureService.getGesturesByUserId(user.getUserId());
             profileDto.setGestureCount(gestures.size());
 
-            // 알림 설정 확인
-            boolean notificationEnabled = settingService.isNotificationEnabled(user.getUserId());
-            profileDto.setNotificationEnabled(notificationEnabled);
+            // 알림 설정 확인 코드 제거됨
 
             return ResponseEntity.ok(ApiResponse.success("사용자 프로필 정보를 성공적으로 조회했습니다", profileDto));
         } catch (Exception e) {
@@ -113,6 +109,21 @@ public class ProfileController {
                         .body(ApiResponse.error("인증된 사용자를 찾을 수 없습니다"));
             }
 
+            // 카메라가 존재하는지 먼저 확인
+            Camera camera = null;
+            try {
+                camera = cameraService.getCameraById(cameraId);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(ApiResponse.error("해당 카메라를 찾을 수 없습니다: " + cameraId));
+            }
+
+            // 카메라의 소유자 확인
+            if (!camera.getUserId().equals(user.getUserId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(ApiResponse.error("해당 카메라에 대한 접근 권한이 없습니다"));
+            }
+
             // 카메라 삭제 처리
             boolean deleted = cameraService.deleteCamera(cameraId, user.getUserId());
 
@@ -122,7 +133,7 @@ public class ProfileController {
                 return ResponseEntity.badRequest().body(ApiResponse.error("카메라 삭제에 실패했습니다"));
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+            return ResponseEntity.badRequest().body(ApiResponse.error("카메라 삭제 중 오류 발생: " + e.getMessage()));
         }
     }
 
@@ -142,37 +153,6 @@ public class ProfileController {
 
             return ResponseEntity.ok(ApiResponse.success("사용자 카메라 개수를 성공적으로 조회했습니다",
                     Map.of("count", count)));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
-        }
-    }
-
-    @PutMapping("/notification-setting")
-    public ResponseEntity<ApiResponse> updateNotificationSetting(@RequestParam boolean enabled) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String email = authentication.getName();
-
-            User user = userService.getUserByEmail(email);
-            if (user == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(ApiResponse.error("인증된 사용자를 찾을 수 없습니다"));
-            }
-
-            // 설정 업데이트
-            Setting setting = settingRepository.findByUserId(user.getUserId())
-                    .orElse(new Setting());
-
-            setting.setUserId(user.getUserId());
-            setting.setNotificationEnabled(enabled ?
-                    Setting.NotificationEnabled.enabled :
-                    Setting.NotificationEnabled.disabled);
-
-            settingRepository.save(setting);
-
-            return ResponseEntity.ok(ApiResponse.success(
-                    "알림 설정이 " + (enabled ? "활성화" : "비활성화") + " 되었습니다",
-                    Map.of("notificationEnabled", enabled)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }

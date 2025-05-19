@@ -33,19 +33,29 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/test", "/error", "/api/**").permitAll()
-                        .anyRequest().authenticated()
+                        // 로그인/회원가입 엔드포인트는 인증 없이 허용
+                        .requestMatchers("/api/admin/login", "/api/admin/register").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/health", "/test", "/error").permitAll()
+
+                        // Static 리소스 허용
+                        .requestMatchers("/static/**", "/css/**", "/js/**", "/media/**").permitAll()
+                        .requestMatchers("/favicon.ico").permitAll()
+
+                        // React 라우팅 허용
+                        .requestMatchers("/", "/index.html", "/admin", "/admin/**").permitAll()
+
+                        // 나머지 API는 인증 필요
+                        .requestMatchers("/api/**").authenticated()
+
+                        // 기타 모든 요청 허용
+                        .anyRequest().permitAll()
                 )
-
-
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -64,10 +74,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // 실제 환경에서는 특정 도메인으로 제한하세요
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // setAllowedOrigins 대신 사용
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

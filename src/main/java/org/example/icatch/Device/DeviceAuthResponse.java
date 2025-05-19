@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
 @Builder
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeviceAuthResponse {
     // 수정
     long deviceId;
@@ -20,13 +22,12 @@ public class DeviceAuthResponse {
         this.deviceId = deviceId;
         this.deviceIP = deviceIP;
         this.cameraId = cameraId;
-        this.userId = userId;
+        // this.userId = userId;
     }
 
     public DeviceAuthResponse(Integer deviceId, String deviceIp, Integer cameraId) {
         this.deviceId = deviceId;
         this.deviceIP = deviceIp;
         this.cameraId = cameraId;
-        this.userId = null;
     }
 }

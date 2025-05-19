@@ -14,10 +14,4 @@ public class SettingService {
         this.settingRepository = settingRepository;
     }
 
-    @Transactional(readOnly = true)
-    public boolean isNotificationEnabled(Integer userId) {
-        return settingRepository.findByUserId(userId)
-                .map(setting -> setting.getNotificationEnabled() == Setting.NotificationEnabled.enabled)
-                .orElse(false); // 설정이 없으면 기본적으로 비활성화
-    }
 }

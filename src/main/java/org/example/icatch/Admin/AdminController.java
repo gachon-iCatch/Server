@@ -35,7 +35,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("users")
+    @GetMapping("/users")
     public ResponseEntity<ApiResponse> getUsers() {
         try {
             List<UsersResponse> usersResponse = adminService.getUsers();

@@ -41,6 +41,7 @@ public class PictureService {
     }
 
     @Transactional(readOnly = true)
+    // PictureService.java 메서드 예시
     public PictureResponseDTO getPictureById(Integer imageId) {
         Picture picture = pictureRepository.findById(imageId)
                 .orElseThrow(() -> new RuntimeException("이미지를 찾을 수 없습니다."));
@@ -64,6 +65,50 @@ public class PictureService {
         } catch (MalformedURLException e) {
             throw new Exception("이미지 파일 경로가 잘못되었습니다.", e);
         }
+    }
+    // 이미지 경로에서 사용자 ID 추출 (이미지 경로가 image/년/월/일/사용자ID/디바이스ID_타임스탬프.jpg 형식일 경우)
+    public Integer extractUserIdFromPath(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return null;
+        }
+
+        String[] parts = imagePath.split("/");
+        if (parts.length >= 5) { // 경로가 충분히 깊은지 확인
+            try {
+                return Integer.parseInt(parts[4]); // 5번째 부분이 사용자 ID
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    // 이미지 경로 검증 - 사용자 ID와 디바이스 ID가 일치하는지 확인
+    public boolean validateImageOwnership(String imagePath, Integer userId, Integer deviceId) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return false;
+        }
+
+        // 경로에서 사용자 ID 추출
+        Integer pathUserId = extractUserIdFromPath(imagePath);
+
+        // 파일명에서 디바이스 ID 추출 (디바이스ID_타임스탬프.jpg 형식)
+        String[] parts = imagePath.split("/");
+        if (parts.length == 0) return false;
+
+        String fileName = parts[parts.length - 1];
+        String[] fileNameParts = fileName.split("_");
+
+        if (fileNameParts.length >= 1) {
+            try {
+                Integer pathDeviceId = Integer.parseInt(fileNameParts[0]);
+                return userId.equals(pathUserId) && deviceId.equals(pathDeviceId);
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     // 이미지 삭제 메서드

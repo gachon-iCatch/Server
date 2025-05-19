@@ -55,7 +55,8 @@ public class UserController {
             // 토큰에서 이메일 추출
             String email = jwtTokenProvider.getEmailFromToken(token);
 
-            userService.deleteUser(email);
+            // 수정된 메서드 호출
+            userService.deleteUserWithRelatedData(email);
             return ResponseEntity.ok(ApiResponse.success("회원 탈퇴가 완료되었습니다"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));

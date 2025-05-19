@@ -2,6 +2,7 @@ package org.example.icatch.Picture;
 
 import jakarta.persistence.*;
 import org.example.icatch.Device.Device;
+import org.example.icatch.User.User;
 import org.example.icatch.ActiveLog.ActiveLog;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,10 @@ public class Picture {
     private Integer imageId;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "device_id")
     private Device device;
 
@@ -28,7 +33,7 @@ public class Picture {
     @Column(name = "capture_time")
     private LocalDateTime captureTime;
 
-    @Column(name = "stroage_order")
+    @Column(name = "storage_order")
     private String storageOrder;
 
     // Getters and Setters
@@ -46,6 +51,9 @@ public class Picture {
 
     public void setDevice(Device device) {
         this.device = device;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getDeviceId() {

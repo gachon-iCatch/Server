@@ -16,17 +16,14 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserService userService;
     private final CameraService cameraService;
-    private final SettingService settingService;
 
     @Autowired
     public NotificationService(NotificationRepository notificationRepository,
                                UserService userService,
-                               CameraService cameraService,
-                               SettingService settingService) {
+                               CameraService cameraService) {
         this.notificationRepository = notificationRepository;
         this.userService = userService;
         this.cameraService = cameraService;
-        this.settingService = settingService;
     }
 
     // 사용자 알림 목록 조회
@@ -50,11 +47,6 @@ public class NotificationService {
     public NotificationDto createNotification(Integer userId, Integer cameraId,
                                               String notificationType, String title,
                                               String createdAt) {
-        // 알림 설정 확인
-        if (!settingService.isNotificationEnabled(userId)) {
-            return null; // 알림이 비활성화되어 있으면 생성하지 않음
-        }
-
         User user = userService.getUserById(userId);
         Camera camera = cameraService.getCameraById(cameraId);
 
@@ -70,12 +62,19 @@ public class NotificationService {
         return convertToDto(notification);
     }
 
-    // 엔티티를 DTO로 변환
     private NotificationDto convertToDto(Notification notification) {
         NotificationDto dto = new NotificationDto();
         dto.setNotificationId(notification.getNotificationId());
         dto.setUserId(notification.getUser().getUserId());
-        dto.setCameraId(notification.getCamera().getCameraId());
+
+        // 카메라가 NULL일 수 있으므로 안전하게 처리
+        if (notification.getCamera() != null) {
+            dto.setCameraId(notification.getCamera().getCameraId());
+        } else {
+            // 카메라가 삭제된 경우 null 설정
+            dto.setCameraId(null);
+        }
+
         dto.setNotificationType(notification.getNotificationType().toString());
         dto.setTitle(notification.getTitle());
         dto.setCreatedAt(notification.getCreatedAt());

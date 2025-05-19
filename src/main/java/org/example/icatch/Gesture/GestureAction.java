@@ -46,17 +46,21 @@ public class GestureAction{
         enabled, disabled
     }
 
+    // 기능 이름 변경
     public enum SelectedFunction {
         BLACK_SCREEN("블랙 스크린 ON/OFF"),
-        SIGNAL("신고 기능"),
-        TIME_CAPTURE("시간 찍기"),
-        ALARM("알림 ON/OFF"),
-        FINE_TEXT("\"괜찮아~\" 알림 보내기"),
-        EMERGENCY_TEXT("\"도와줘!\" 알림 보내기"),
-        HELP_TEXT("\"불편해 ㅠㅠ\" 알림 보내기"),
-        PERSON_TEXT("\"인사하기\" 알림 보내기");
+        DECLARATION("신고 기능"),
+        PICTURE("시간 찍기"),
+        OK("\"괜찮아~\" 알림 보내기"),
+        HELP("\"도와줘!\" 알림 보내기"),
+        INCONVENIENT("\"불편해 ㅠㅠ\" 알림 보내기"),
+        HELLO("\"인사하기\" 알림 보내기");
+
+        // ALARM enum 값 제거됨
 
         private String description;
+
+        // 나머지 코드는 동일
 
         SelectedFunction(String description) {
             this.description = description;
@@ -82,28 +86,25 @@ public class GestureAction{
                 this.blackScreen = EnabledStatus.enabled;
                 this.message = "블랙 스크린 활성화";
                 break;
-            case SIGNAL:
+            case DECLARATION:
                 this.sendAlert = EnabledStatus.enabled;
                 this.message = "신고가 접수되었습니다";
                 break;
-            case TIME_CAPTURE:
+            case PICTURE:
                 this.capture = EnabledStatus.enabled;
                 this.message = "화면이 캡처되었습니다";
                 break;
-            case ALARM:
-                this.notifications = EnabledStatus.enabled;
-                this.message = "알림이 활성화되었습니다";
-                break;
-            case FINE_TEXT:
+            // ALARM case 제거됨
+            case OK:
                 this.message = "괜찮아~";
                 break;
-            case EMERGENCY_TEXT:
+            case HELP:
                 this.message = "도와줘!";
                 break;
-            case HELP_TEXT:
+            case INCONVENIENT:
                 this.message = "불편해 ㅠㅠ";
                 break;
-            case PERSON_TEXT:
+            case HELLO:
                 this.message = "인사하기";
                 break;
         }
@@ -113,21 +114,22 @@ public class GestureAction{
         if (this.blackScreen == EnabledStatus.enabled) {
             this.selectedFunction = SelectedFunction.BLACK_SCREEN;
         } else if (this.sendAlert == EnabledStatus.enabled) {
-            this.selectedFunction = SelectedFunction.SIGNAL;
+            this.selectedFunction = SelectedFunction.DECLARATION;
         } else if (this.capture == EnabledStatus.enabled) {
-            this.selectedFunction = SelectedFunction.TIME_CAPTURE;
+            this.selectedFunction = SelectedFunction.PICTURE;
         } else if (this.notifications == EnabledStatus.enabled) {
-            this.selectedFunction = SelectedFunction.ALARM;
+            // notifications 값이 enabled인 경우 기본값으로 OK 설정 (또는 다른 적절한 값)
+            this.selectedFunction = SelectedFunction.OK;
         } else if (message != null && !message.isEmpty()) {
             // 메시지 내용에 따라 적절한 텍스트 기능 설정
             if (message.contains("괜찮아")) {
-                this.selectedFunction = SelectedFunction.FINE_TEXT;
+                this.selectedFunction = SelectedFunction.OK;
             } else if (message.contains("도와줘")) {
-                this.selectedFunction = SelectedFunction.EMERGENCY_TEXT;
+                this.selectedFunction = SelectedFunction.HELP;
             } else if (message.contains("불편해")) {
-                this.selectedFunction = SelectedFunction.HELP_TEXT;
+                this.selectedFunction = SelectedFunction.INCONVENIENT;
             } else if (message.contains("인사하기")) {
-                this.selectedFunction = SelectedFunction.PERSON_TEXT;
+                this.selectedFunction = SelectedFunction.HELLO;
             }
         }
     }

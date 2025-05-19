@@ -26,7 +26,7 @@ public class Notification {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "camera_id", nullable = false)
+    @JoinColumn(name = "camera_id", nullable = true)  
     private Camera camera;
 
     @Column(name = "notification_type")
