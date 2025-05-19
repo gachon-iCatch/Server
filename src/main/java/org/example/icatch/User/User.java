@@ -83,5 +83,4 @@ public class User {
     public void setSurveyCompleted(Boolean surveyCompleted) {
         this.surveyCompleted = surveyCompleted;
     }
-
 }

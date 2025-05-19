@@ -57,6 +57,30 @@ public class CameraController {
         }
     }
 
+    @DeleteMapping("/profile/cameras/{cameraId}")
+    public ResponseEntity<ApiResponse> deleteProfileCamera(@PathVariable Integer cameraId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String email = authentication.getName();
+            User user = userService.getUserByEmail(email);
+
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(ApiResponse.error("인증된 사용자를 찾을 수 없습니다"));
+            }
+
+            boolean deleted = cameraService.deleteCamera(cameraId, user.getUserId());
+
+            if (deleted) {
+                return ResponseEntity.ok(ApiResponse.success("카메라가 성공적으로 삭제되었습니다"));
+            } else {
+                return ResponseEntity.badRequest().body(ApiResponse.error("카메라 삭제에 실패했습니다"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
     //카메라 스트림 URL 조회
 
     @GetMapping("/{cameraId}/stream")

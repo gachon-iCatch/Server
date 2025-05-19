@@ -22,12 +22,4 @@ public class Setting {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(name = "notification_enabled")
-    @Enumerated(EnumType.STRING)
-    private NotificationEnabled notificationEnabled;
-
-    // 알림 활성화 상태 ENUM
-    public enum NotificationEnabled {
-        enabled, disabled
-    }
 }

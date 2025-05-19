@@ -69,12 +69,11 @@ public class GestureActionService {
         switch (function) {
             case BLACK_SCREEN:
                 return gestureActionRepository.findByBlackScreen(GestureAction.EnabledStatus.enabled);
-            case SIGNAL:
+            case DECLARATION:
                 return gestureActionRepository.findBySendAlert(GestureAction.EnabledStatus.enabled);
-            case TIME_CAPTURE:
+            case PICTURE:
                 return gestureActionRepository.findByCapture(GestureAction.EnabledStatus.enabled);
-            case ALARM:
-                return gestureActionRepository.findByNotifications(GestureAction.EnabledStatus.enabled);
+            // ALARM case 제거
             default:
                 return Collections.emptyList();
         }

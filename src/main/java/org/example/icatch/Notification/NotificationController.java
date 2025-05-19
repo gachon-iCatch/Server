@@ -76,7 +76,7 @@ public class NotificationController {
         }
     }
 
-    // Python 서비스를 위한 알림 생성 API
+    // Python 알림 생성 API
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createNotification(@Valid @RequestBody NotificationCreateRequest request) {
         try {
@@ -87,11 +87,6 @@ public class NotificationController {
                     request.getTitle(),
                     request.getCreatedAt()
             );
-
-            if (notification == null) {
-                return ResponseEntity.ok(ApiResponse.success(
-                        "알림이 비활성화되어 있어 생성되지 않았습니다", null));
-            }
 
             return ResponseEntity.ok(ApiResponse.success("알림이 성공적으로 생성되었습니다", notification));
         } catch (Exception e) {

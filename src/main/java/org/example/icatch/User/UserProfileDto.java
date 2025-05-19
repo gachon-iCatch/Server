@@ -10,5 +10,4 @@ public class UserProfileDto {
     private int cameraCount;
     private int targetCount;
     private int gestureCount;
-    private boolean notificationEnabled;
 }

@@ -6,17 +6,21 @@ import java.time.format.DateTimeFormatter;
 public class PictureResponseDTO {
     private Integer imageId;
     private Integer deviceId;
-    private String deviceName; // 기기 이름 추가
+    private String deviceName;
+    private Integer userId;
     private Integer logId;
     private String imagePath;
     private LocalDateTime captureTime;
-    private String formattedCaptureTime; // 형식화된 날짜/시간
-    private String imageUrl; // 프론트엔드에서 이미지를 로드할 URL
+    private String formattedCaptureTime;
+    private String imageUrl;
 
     public PictureResponseDTO(Picture picture) {
         this.imageId = picture.getImageId();
         this.deviceId = picture.getDeviceId();
         this.deviceName = picture.getDevice() != null ? picture.getDevice().getDeviceName() : "알 수 없음";
+        if (picture.getDevice() != null && picture.getDevice().getUser() != null) {
+            this.userId = picture.getDevice().getUser().getUserId();
+        }
         this.logId = picture.getLogId();
         this.imagePath = picture.getImagePath();
         this.captureTime = picture.getCaptureTime();
@@ -43,6 +47,11 @@ public class PictureResponseDTO {
     public String getDeviceName() {
         return deviceName;
     }
+    
+    public Integer getUserId() {
+        return userId;
+    }
+
 
     public Integer getLogId() {
         return logId;

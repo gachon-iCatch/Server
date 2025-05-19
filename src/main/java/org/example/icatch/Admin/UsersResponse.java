@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class UsersResponse {
     private String email;
     private String userNickname;
+    private Integer userId;
 }

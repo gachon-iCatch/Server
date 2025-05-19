@@ -7,6 +7,8 @@ import org.example.icatch.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.example.icatch.Notification.NotificationRepository;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,11 +21,16 @@ public class CameraService {
 
     private final CameraRepository cameraRepository;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
+
 
     @Autowired
-    public CameraService(CameraRepository cameraRepository, UserRepository userRepository) {
+    public CameraService(CameraRepository cameraRepository,
+                         UserRepository userRepository,
+                        NotificationRepository notificationRepository) {
         this.cameraRepository = cameraRepository;
         this.userRepository = userRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     @Transactional
@@ -193,22 +200,23 @@ public class CameraService {
 
     @Transactional
     public boolean deleteCamera(Integer cameraId, Integer userId) {
-        Optional<Camera> optionalCamera = cameraRepository.findById(cameraId);
-        if (!optionalCamera.isPresent()) {
-            throw new RuntimeException("해당 카메라를 찾을 수 없습니다: " + cameraId);
+        // 카메라 소유권 확인
+        Camera camera = cameraRepository.findById(cameraId)
+                .orElse(null);
+
+        if (camera == null || !camera.getUser().getUserId().equals(userId)) {
+            return false;
         }
 
-        Camera camera = optionalCamera.get();
-        if (!camera.getUserId().equals(userId)) {
-            throw new RuntimeException("해당 카메라에 대한 접근 권한이 없습니다");
-        }
+        // 카메라와 관련된 알림 먼저 삭제
+        notificationRepository.deleteByCameraId(cameraId);
 
-        // 관련된 로그, 이미지 등의 연관 데이터도 삭제해야 할 수 있음
-        // 이 부분은 요구사항에 따라 추가 구현이 필요할 수 있음
-
+        // 카메라 삭제
         cameraRepository.delete(camera);
         return true;
     }
+
+
 
     @Transactional(readOnly = true)
     public int countCamerasByUserId(Integer userId) {

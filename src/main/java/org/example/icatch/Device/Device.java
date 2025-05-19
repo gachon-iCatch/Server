@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.example.icatch.User.User;
 import org.example.icatch.enums.AiStatus;
 import org.example.icatch.enums.DeviceStatus;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +25,7 @@ public class Device {
     @Column(name = "device_id")
     private Integer deviceId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -48,7 +49,8 @@ public class Device {
     @Column(name = "version")
     private Double version;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     private String deviceName;

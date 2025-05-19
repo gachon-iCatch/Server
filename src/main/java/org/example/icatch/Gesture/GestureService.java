@@ -42,19 +42,20 @@ public class GestureService {
             if (gesture.getGestureName() != null) {
                 if (gesture.getGestureName().contains("엄지") ||
                         gesture.getGestureName().contains("thumbs up")) {
-                    newAction.setSelectedFunction(GestureAction.SelectedFunction.FINE_TEXT);
+                    newAction.setSelectedFunction(GestureAction.SelectedFunction.OK);
                     newAction.setMessage("괜찮아~");
                 } else if (gesture.getGestureName().contains("0")) {
                     newAction.setSelectedFunction(GestureAction.SelectedFunction.BLACK_SCREEN);
                 } else if (gesture.getGestureName().contains("손가락")) {
-                    newAction.setSelectedFunction(GestureAction.SelectedFunction.PERSON_TEXT);
+                    newAction.setSelectedFunction(GestureAction.SelectedFunction.HELLO);
                     newAction.setMessage("인사하기");
                 } else {
-                    newAction.setSelectedFunction(GestureAction.SelectedFunction.ALARM);
+                    // 기본값 설정 - ALARM 대신 OK 또는 다른 적절한 값 사용
+                    newAction.setSelectedFunction(GestureAction.SelectedFunction.OK);
                 }
             } else {
-                // 기본값 설정
-                newAction.setSelectedFunction(GestureAction.SelectedFunction.ALARM);
+                // 기본값 설정 - ALARM 대신 OK 또는 다른 적절한 값 사용
+                newAction.setSelectedFunction(GestureAction.SelectedFunction.OK);
             }
 
             // 액션 저장 및 제스처와 연결
@@ -129,35 +130,41 @@ public class GestureService {
             System.out.println("String에서 enum으로 변환 시도: " + selectedFunction);
 
             // 기능 명칭 맵핑 (클라이언트에서 보낸 문자열 -> enum 값)
+            // 기능 명칭 맵핑 (클라이언트에서 보낸 문자열 -> enum 값)
             GestureAction.SelectedFunction function;
             switch(selectedFunction) {
                 case "BLACK_SCREEN":
+                case "black_screen":
                     function = GestureAction.SelectedFunction.BLACK_SCREEN;
                     break;
-                case "SIGNAL":
-                    function = GestureAction.SelectedFunction.SIGNAL;
+                case "DECLARATION":
+                case "declaration":
+                    function = GestureAction.SelectedFunction.DECLARATION;
                     break;
-                case "TIME_CAPTURE":
-                    function = GestureAction.SelectedFunction.TIME_CAPTURE;
+                case "PICTURE":
+                case "picture":
+                    function = GestureAction.SelectedFunction.PICTURE;
                     break;
-                case "ALARM":
-                    function = GestureAction.SelectedFunction.ALARM;
+                // "ALARM" 케이스 제거
+                case "OK":
+                case "ok":
+                    function = GestureAction.SelectedFunction.OK;
                     break;
-                case "FINE_TEXT":
-                    function = GestureAction.SelectedFunction.FINE_TEXT;
+                case "HELP":
+                case "help":
+                    function = GestureAction.SelectedFunction.HELP;
                     break;
-                case "EMERGENCY_TEXT":
-                    function = GestureAction.SelectedFunction.EMERGENCY_TEXT;
+                case "INCONVENIENT":
+                case "inconvenient":
+                    function = GestureAction.SelectedFunction.INCONVENIENT;
                     break;
-                case "HELP_TEXT":
-                    function = GestureAction.SelectedFunction.HELP_TEXT;
-                    break;
-                case "PERSON_TEXT":
-                    function = GestureAction.SelectedFunction.PERSON_TEXT;
+                case "HELLO":
+                case "hello":
+                    function = GestureAction.SelectedFunction.HELLO;
                     break;
                 default:
-                    // 기본값은 ALARM으로 설정
-                    function = GestureAction.SelectedFunction.ALARM;
+                    // 기본값은 OK로 설정 (또는 다른 적절한 값)
+                    function = GestureAction.SelectedFunction.OK;
                     break;
             }
 
@@ -180,8 +187,8 @@ public class GestureService {
             }
         } catch (Exception e) {
             System.out.println("함수 설정 중 오류 발생: " + e.getMessage());
-            // 오류 발생 시 기본값으로 ALARM 사용
-            action.setSelectedFunction(GestureAction.SelectedFunction.ALARM);
+            // 오류 발생 시 기본값으로 OK 사용 (ALARM 대신)
+            action.setSelectedFunction(GestureAction.SelectedFunction.OK);
             gestureActionRepository.save(action);
         }
 
@@ -206,8 +213,8 @@ public class GestureService {
             // 액션이 없는 경우 새로 생성
             GestureAction newAction = new GestureAction();
             newAction.setMessage(message);
-            // 기본값으로 FINE_TEXT 설정 (메시지가 있으므로)
-            newAction.setSelectedFunction(GestureAction.SelectedFunction.FINE_TEXT);
+            // 기본값으로 OK 설정 (메시지가 있으므로)
+            newAction.setSelectedFunction(GestureAction.SelectedFunction.OK);  // FINE_TEXT에서 OK로 변경
 
             GestureAction savedAction = gestureActionRepository.save(newAction);
             gesture.setActionId(savedAction.getActionId());
@@ -216,7 +223,6 @@ public class GestureService {
 
         return gesture;
     }
-
     @Transactional
     public void deleteGesture(Integer gestureId) {
         gestureRepository.findById(gestureId)
@@ -265,20 +271,20 @@ public class GestureService {
                     if (dto.getSelectedFunction() == null && action.getMessage() != null) {
                         String message = action.getMessage();
                         if (message.contains("괜찮아")) {
-                            dto.setSelectedFunction(GestureAction.SelectedFunction.FINE_TEXT);
+                            dto.setSelectedFunction(GestureAction.SelectedFunction.OK);
                         } else if (message.contains("도와줘")) {
-                            dto.setSelectedFunction(GestureAction.SelectedFunction.EMERGENCY_TEXT);
+                            dto.setSelectedFunction(GestureAction.SelectedFunction.HELP);
                         } else if (message.contains("불편해")) {
-                            dto.setSelectedFunction(GestureAction.SelectedFunction.HELP_TEXT);
+                            dto.setSelectedFunction(GestureAction.SelectedFunction.INCONVENIENT);
                         } else if (message.contains("인사하기")) {
-                            dto.setSelectedFunction(GestureAction.SelectedFunction.PERSON_TEXT);
+                            dto.setSelectedFunction(GestureAction.SelectedFunction.HELLO);
                         } else {
-                            // 기본값
-                            dto.setSelectedFunction(GestureAction.SelectedFunction.ALARM);
+                            // 기본값 - ALARM 대신 OK 또는 다른 적절한 값 사용
+                            dto.setSelectedFunction(GestureAction.SelectedFunction.OK);
                         }
                     } else if (dto.getSelectedFunction() == null) {
-                        // 메시지도 없는 경우 기본값 설정
-                        dto.setSelectedFunction(GestureAction.SelectedFunction.ALARM);
+                        // 메시지도 없는 경우 기본값 설정 - ALARM 대신 OK 또는 다른 적절한 값 사용
+                        dto.setSelectedFunction(GestureAction.SelectedFunction.OK);
                     }
                 }
             }
@@ -293,18 +299,19 @@ public class GestureService {
         if (gestureName == null) return;
 
         if (gestureName.contains("엄지") || gestureName.contains("thumbs up")) {
-            dto.setSelectedFunction(GestureAction.SelectedFunction.FINE_TEXT);
+            dto.setSelectedFunction(GestureAction.SelectedFunction.OK);
             dto.setMessage("괜찮아~");
         } else if (gestureName.contains("0")) {
             dto.setSelectedFunction(GestureAction.SelectedFunction.BLACK_SCREEN);
         } else if (gestureName.contains("손가락")) {
-            dto.setSelectedFunction(GestureAction.SelectedFunction.PERSON_TEXT);
+            dto.setSelectedFunction(GestureAction.SelectedFunction.HELLO);
             dto.setMessage("인사하기");
         } else {
-            // 기본값 설정
-            dto.setSelectedFunction(GestureAction.SelectedFunction.ALARM);
+            // 기본값 설정 - ALARM 대신 OK 또는 다른 적절한 값 사용
+            dto.setSelectedFunction(GestureAction.SelectedFunction.OK);
         }
     }
+
     @Transactional
     public void setupMissingActions() {
         List<Gesture> allGestures = gestureRepository.findAll();
@@ -318,16 +325,18 @@ public class GestureService {
                 if (gesture.getGestureName() != null) {
                     String gestureName = gesture.getGestureName().toLowerCase();
                     if (gestureName.contains("엄지") || gestureName.contains("thumbs up")) {
-                        newAction.setSelectedFunction(GestureAction.SelectedFunction.FINE_TEXT);
+                        newAction.setSelectedFunction(GestureAction.SelectedFunction.OK);
                     } else if (gestureName.contains("0")) {
                         newAction.setSelectedFunction(GestureAction.SelectedFunction.BLACK_SCREEN);
                     } else if (gestureName.contains("손가락")) {
-                        newAction.setSelectedFunction(GestureAction.SelectedFunction.PERSON_TEXT);
+                        newAction.setSelectedFunction(GestureAction.SelectedFunction.HELLO);
                     } else {
-                        newAction.setSelectedFunction(GestureAction.SelectedFunction.ALARM);
+                        // 기본값으로 OK 사용 (ALARM 대신)
+                        newAction.setSelectedFunction(GestureAction.SelectedFunction.OK);
                     }
                 } else {
-                    newAction.setSelectedFunction(GestureAction.SelectedFunction.ALARM);
+                    // 기본값으로 OK 사용 (ALARM 대신)
+                    newAction.setSelectedFunction(GestureAction.SelectedFunction.OK);
                 }
 
                 // 액션 저장 및 제스처와 연결

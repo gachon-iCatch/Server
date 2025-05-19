@@ -21,13 +21,13 @@ public class Camera{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "camera_id")
-    private Integer camera_id;
+    private Integer cameraId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "device_id", referencedColumnName = "device_id")
     private Device device;
 
@@ -49,12 +49,13 @@ public class Camera{
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+
     public Integer getCameraId() {
-        return camera_id;
+        return cameraId;
     }
 
     public void setCameraId(Integer cameraId) {
-        this.camera_id = cameraId;
+        this.cameraId = cameraId;
     }
 
 

@@ -1,3 +1,4 @@
+// JwtTokenProvider.java 파일 수정
 package org.example.icatch.security;
 
 import io.jsonwebtoken.*;
@@ -15,6 +16,7 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
+    // 여기에 JwtTokenFilter 클래스 코드가 있다면 삭제
 
     private final SecretKey key;
     private final long validityInMilliseconds;
@@ -23,15 +25,20 @@ public class JwtTokenProvider {
     public JwtTokenProvider(
             @Value("${security.jwt.token.secret-key:a37sdl28ydh38gsl39syw72jsk10pq59abcdefghijklmnopqrstuvwxyz123456789}") String secretKey,
             @Value("${security.jwt.token.expire-length:259200000}") long validityInMilliseconds,
-
             UserDetailsService userDetailsService) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.validityInMilliseconds = validityInMilliseconds;
         this.userDetailsService = userDetailsService;
     }
 
+    // createToken 메서드 수정 - 두 가지 버전 제공
     public String createToken(String username) {
+        return createToken(username, "USER");
+    }
+
+    public String createToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
+        claims.put("role", role);
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -61,9 +68,8 @@ public class JwtTokenProvider {
         }
     }
 
-
     public String getEmailFromToken(String token) {
-        if (token.startsWith("Bearer ")) {
+        if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
 
