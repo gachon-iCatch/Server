@@ -16,23 +16,27 @@ public class PictureResponseDTO {
 
     public PictureResponseDTO(Picture picture) {
         this.imageId = picture.getImageId();
-        this.deviceId = picture.getDeviceId();
+        this.deviceId = picture.getDevice() != null ? picture.getDeviceId() : null;
         this.deviceName = picture.getDevice() != null ? picture.getDevice().getDeviceName() : "알 수 없음";
-        if (picture.getDevice() != null && picture.getDevice().getUser() != null) {
-            this.userId = picture.getDevice().getUser().getUserId();
-        }
+
+        // 이 부분을 수정합니다 - null 체크를 더 안전하게
+        this.userId = picture.getDevice() != null && picture.getDevice().getUser() != null ?
+                picture.getDevice().getUser().getUserId() : null;
+
         this.logId = picture.getLogId();
         this.imagePath = picture.getImagePath();
         this.captureTime = picture.getCaptureTime();
 
-        // 날짜 형식화 (yyyy-MM-dd HH:mm:ss)
+        // 날짜 형식화
         if (captureTime != null) {
             this.formattedCaptureTime = captureTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        } else {
+            this.formattedCaptureTime = null;
         }
 
-        // 이미지 URL 생성
-        this.imageUrl = "/api/monitoring/pictures/image/" + picture.getImageId();
-
+        // 이미지 URL 생성 (더 안전하게)
+        this.imageUrl = picture.getImageId() != null ?
+                "/api/monitoring/pictures/image/" + picture.getImageId() : null;
     }
 
     // Getters
