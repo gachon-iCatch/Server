@@ -42,7 +42,8 @@ public class CameraService {
 
         Camera camera = optionalCamera.get();
 
-        if (!camera.getUserId().equals(userId)) {
+        // userId가 null이 아닌 경우에만 사용자 권한 체크
+        if (userId != null && !camera.getUserId().equals(userId)) {
             throw new RuntimeException("해당 카메라에 대한 접근 권한이 없습니다");
         }
 
@@ -62,7 +63,6 @@ public class CameraService {
         return cameraRepository.save(camera);
     }
 
-
     @Transactional(readOnly = true)
     public String getDangerZone(Integer cameraId, Integer userId) {
         Optional<Camera> optionalCamera = cameraRepository.findById(cameraId);
@@ -72,7 +72,8 @@ public class CameraService {
 
         Camera camera = optionalCamera.get();
 
-        if (!camera.getUserId().equals(userId)) {
+        // userId가 null이 아닌 경우에만 사용자 권한 체크
+        if (userId != null && !camera.getUserId().equals(userId)) {
             throw new RuntimeException("해당 카메라에 대한 접근 권한이 없습니다");
         }
 
